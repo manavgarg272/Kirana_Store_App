@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "972211348634",
+    "project_id": "kirana-store-app-f88b9",
+    "storage_bucket": "kirana-store-app-f88b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972211348634:android:94f138737e85286888eb23",
+        "android_client_info": {
+          "package_name": "com.example.kirna_store_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfyWsh9O26qn4SmEeM_jDIF1W55zyPWYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
