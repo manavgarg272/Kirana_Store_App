@@ -1,12 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:kirna_store_app/core/services/error/failure.dart';
 import 'package:kirna_store_app/core/services/network_services/network_call_service.dart';
-import 'package:kirna_store_app/feature/home_screen/data/data_source/product_ds.dart';
-import 'package:kirna_store_app/feature/home_screen/data/repo_impl/product_repo_impl.dart';
-import 'package:kirna_store_app/feature/home_screen/domain/use_case/product_use_case.dart';
-import 'package:kirna_store_app/feature/product_view/data/data_source/product_list_ds.dart';
+
 import 'package:kirna_store_app/feature/product_view/data/model/product_model.dart';
-import 'package:kirna_store_app/feature/product_view/domain/use_case/product_list_use_case.dart';
 
 enum ProductListNotifierState { loading, loaded, error, initial }
 

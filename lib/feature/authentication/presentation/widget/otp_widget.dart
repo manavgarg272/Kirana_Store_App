@@ -1,11 +1,11 @@
-
-
 import 'dart:async';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kirna_store_app/core/constant_files/constant_image.dart';
+import 'package:kirna_store_app/feature/authentication/presentation/manager/phone_authentication_notifier.dart';
+import 'package:kirna_store_app/main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:provider/provider.dart';
 
 class OtpVerificationWidget extends StatefulWidget {
   final String? phoneNumber;
@@ -34,16 +34,13 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
   @override
   void dispose() {
     errorController!.close();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-
-      child: Column(
+    return  Column(
         children: [
           Container(
             width: size.width/2,
@@ -77,7 +74,7 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
 
 
           Container(
-     
+            margin: EdgeInsets.symmetric(horizontal: size.height/10),
             child: Form(
               key: formKey,
               child: Padding(
@@ -102,12 +99,15 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
                     fieldHeight: 50,
                     fieldWidth: 40,
                     activeFillColor: Colors.white,
+                    inactiveFillColor: Colors.white,
+                    inactiveColor: Colors.grey.shade400,
+                    activeColor: Colors.grey.shade400,
+                    selectedFillColor: Colors.white
                   ),
                   cursorColor: Colors.black,
                   animationDuration: const Duration(milliseconds: 300),
                   enableActiveFill: true,
-                  /* errorAnimationController: errorController,  */
-                   controller: textEditingController, 
+                  controller: textEditingController, 
                   keyboardType: TextInputType.number,
                   boxShadows: const [
                     BoxShadow(
@@ -119,9 +119,7 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
                   onCompleted: (v) {
                     debugPrint("Completed");
                   },
-                  // onTap: () {
-                  //   print("Pressed");
-                  // },
+                  
                   onChanged: (value) {
                     debugPrint(value);
                     setState(() {
@@ -183,10 +181,23 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
           Container(
             margin:
                 const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade300,
+                  borderRadius: BorderRadius.circular(5),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.green.shade200,
+                        offset: const Offset(1, -2),
+                        blurRadius: 5),
+                    BoxShadow(
+                        color: Colors.green.shade200,
+                        offset: const Offset(-1, 2),
+                        blurRadius: 5)
+                  ]),
             child: ButtonTheme(
               height: 50,
               child: TextButton(
-                onPressed: () {
+                onPressed: ()async {
                   formKey.currentState!.validate();
                   // conditions for validating
                   if (currentText.length != 6 || currentText != "123456") {
@@ -194,12 +205,15 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
                         .shake); // Triggering error shake animation
                     setState(() => hasError = true);
                   } else {
-                    setState(
-                      () {
-                        hasError = false;
-                        /* snackBar("OTP Verified!!"); */
-                      },
-                    );
+        
+                        await context.read<PhoneAuthenticationNotifier>().signInWithPhoneCredentials(textEditingController.text);                 
+                        if( FirebaseAuth.instance.currentUser!=null ){
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Kirana Store App')),
+                          );
+                        }
+                      
                   }
                 },
                 child: Center(
@@ -214,22 +228,18 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
                 ),
               ),
             ),
-            decoration: BoxDecoration(
-                color: Colors.green.shade300,
-                borderRadius: BorderRadius.circular(5),
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.green.shade200,
-                      offset: const Offset(1, -2),
-                      blurRadius: 5),
-                  BoxShadow(
-                      color: Colors.green.shade200,
-                      offset: const Offset(-1, 2),
-                      blurRadius: 5)
-                ]),
+           
           ),
+          SizedBox(height: size.height/40,),
+          GestureDetector(
+            onTap: () {
+              context.read<PhoneAuthenticationNotifier>().codeSentCheck=false;
+
+            },
+            child: const Text("GO BACK")
+          )
         ],
-      ),
-    );
+      );
+    
   }
 }

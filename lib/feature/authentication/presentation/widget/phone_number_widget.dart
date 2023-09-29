@@ -74,7 +74,10 @@ class _PhoneNumberVerificationWidgetState extends State<PhoneNumberVerificationW
                     fontSize: size.height / 60),
               ),
               onPressed: () async {
+                FocusScope.of(context).unfocus();
               await context.read<PhoneAuthenticationNotifier>().signInWithPhoneNumber(_phoneController.text);
+
+             
               },
             ))
 

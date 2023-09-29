@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (BuildContext context) {
                       return Container(
                         margin: const EdgeInsets.all(10),
-                        child: Image.network(i)
+                        child: Image.network(i,fit: BoxFit.fill,)
                       );
                     },
                   );
