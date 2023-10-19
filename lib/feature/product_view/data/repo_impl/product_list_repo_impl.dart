@@ -11,8 +11,8 @@ class ProductListRepoImpl extends ProductListRepo{
   ProductListDs productListDs;
   ProductListRepoImpl({ required this.productListDs});
   @override
-  Future<List<ProductModel>> productListModel({required String category}) {
-      return productListDs.productListDs();
+  Future<List<ProductModel>> productListModel({required String subCategoryId}) {
+      return productListDs.productListDs(subCategoryId: subCategoryId);
   }
 
 }

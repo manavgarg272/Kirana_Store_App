@@ -8,6 +8,7 @@ import 'package:kirna_store_app/feature/home_screen/presentation/home_screen.dar
 import 'package:kirna_store_app/feature/home_screen/presentation/manager/product_category.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/widget/checkout_button.dart';
 import 'package:kirna_store_app/feature/product_subcategory/presentation/manager/product_sub_category.dart';
+import 'package:kirna_store_app/feature/product_view/presentation/manager/product_list_notifier.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -31,6 +32,10 @@ class MyApp extends StatelessWidget {
 
             ChangeNotifierProvider<SubCategoryNotifier>(
               create: (context) => SubCategoryNotifier()),
+
+              
+            ChangeNotifierProvider<ProductListNotifier>(
+              create: (context) => ProductListNotifier()),
       ],
       child: MaterialApp(
         theme: ThemeData(

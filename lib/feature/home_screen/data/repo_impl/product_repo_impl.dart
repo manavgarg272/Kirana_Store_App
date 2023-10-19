@@ -6,11 +6,11 @@ import 'package:kirna_store_app/feature/home_screen/domain/repo/product_repo.dar
 
 import '../model/product_category_model.dart';
 
-class ProductListRepoImpl extends ProductRepo {
+class ProductListCaetgoryRepoImpl extends ProductRepo {
   final ProductDs productDs;
 
-  /// Constructs a [ProductListRepoImpl] instance with the given [productDs].
-  ProductListRepoImpl({required this.productDs});
+
+  ProductListCaetgoryRepoImpl({required this.productDs});
 
  
   @override

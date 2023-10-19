@@ -26,7 +26,7 @@ class ProductCategoryNotifier extends ChangeNotifier {
   }
 
   final CategoryListUseCase _categoryUseCase = CategoryListUseCase(
-      productRepo: ProductListRepoImpl(productDs: ProductRepoDsImpl()));
+      productRepo: ProductListCaetgoryRepoImpl(productDs: ProductRepoDsImpl()));
 
   void getProductCategoryData() async  {
     try {

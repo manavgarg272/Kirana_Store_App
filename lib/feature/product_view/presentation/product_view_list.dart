@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kirna_store_app/feature/home_screen/presentation/about_product.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/widget/add_button_widget.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/widget/checkout_button.dart';
 import 'package:kirna_store_app/feature/product_subcategory/presentation/manager/product_sub_category.dart';
+import 'package:kirna_store_app/feature/product_view/presentation/manager/product_list_notifier.dart';
 import 'package:provider/provider.dart';
 
 class ProductViewList extends StatefulWidget {
@@ -30,6 +30,19 @@ class _ProductViewListState extends State<ProductViewList> {
   ];
 
   int current = 0;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<ProductListNotifier>().getProductListData(
+        productCategory: context
+        .read<SubCategoryNotifier>()
+        .subCategoryData[0].subCategoryId
+      );
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -48,7 +61,6 @@ class _ProductViewListState extends State<ProductViewList> {
         floatingActionButton: const CheckOutFloatingButton(),
         body: SingleChildScrollView(
           child: Container(
-     
             child: Column(
               children: [
                 Container(
@@ -56,7 +68,10 @@ class _ProductViewListState extends State<ProductViewList> {
                   height: 50,
                   width: double.infinity,
                   child: ListView.builder(
-                      itemCount: context.watch<SubCategoryNotifier>().subCategoryData.length,
+                      itemCount: context
+                          .watch<SubCategoryNotifier>()
+                          .subCategoryData
+                          .length,
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (ctx, index) {
@@ -65,16 +80,20 @@ class _ProductViewListState extends State<ProductViewList> {
                             setState(() {
                               current = index;
                             });
-
-
+                            context
+                                .read<ProductListNotifier>()
+                                .getProductListData(
+                                    productCategory: context
+                                        .read<SubCategoryNotifier>()
+                                        .subCategoryData[index]
+                                        .subCategoryId);
                           },
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 300),
                             margin: const EdgeInsets.all(5),
-                            width: size.height/7,
-                            height: size.height/30,
+                            width: size.height / 7,
+                            height: size.height / 30,
                             decoration: BoxDecoration(
-                                /* color: current==index?Colors.red:Colors.white54, */
                                 border: Border.all(
                                     width: 1.5,
                                     color: current == index
@@ -84,7 +103,10 @@ class _ProductViewListState extends State<ProductViewList> {
                             child: Container(
                               alignment: Alignment.center,
                               child: Text(
-                                context.watch<SubCategoryNotifier>().subCategoryData[index].subCategoryName,
+                                context
+                                    .watch<SubCategoryNotifier>()
+                                    .subCategoryData[index]
+                                    .subCategoryName,
                                 style: GoogleFonts.roboto(
                                     fontSize: size.height / 70,
                                     fontWeight: FontWeight.bold),
@@ -94,97 +116,79 @@ class _ProductViewListState extends State<ProductViewList> {
                         );
                       }),
                 ),
-
-
-
                 ListView.builder(
-                itemCount: imgList.length,
-                shrinkWrap: true,
-                physics:const NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        elevation: 2,
-                        // gives rounded corner to modal bottom screen
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        builder: (BuildContext context) {
-                          // UDE : SizedBox instead of Container for whitespaces
-                          return const AboutProductDetail();
-                        },
-                      );
-                    },
-                    child: Container(
-                      height: size.height / 5,
-                      padding: EdgeInsets.all(size.height / 100),
-                      margin: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                       
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(color: Colors.grey.shade300)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.fromLTRB(
-                                  size.height / 100,
-                                  size.height / 65,
-                                  size.height / 100,
-                                  size.height / 100),
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(imgList[index])),
+                    itemCount: context
+                    .watch<ProductListNotifier>().productList .length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: size.height / 5,
+                        padding: EdgeInsets.all(size.height / 100),
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            border: Border.all(color: Colors.grey.shade300)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(
+                                    size.height / 100,
+                                    size.height / 65,
+                                    size.height / 100,
+                                    size.height / 100),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Image.network(imgList[index])),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: size.height / 60,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(size.height / 100),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Gold Marrie Bsicuit",
-                                        style: GoogleFonts.roboto(fontWeight: FontWeight.w800,
-                                        fontSize: size.height / 60)
-                                      ),
-                                      Text("100 gm",  style: GoogleFonts.roboto(
-                                      fontSize: size.height / 70)),
-                                      Text("Rs 200",  style: GoogleFonts.roboto(
-                                      fontSize: size.height / 70)),
-                                    ],
+                            SizedBox(
+                              width: size.height / 60,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(size.height / 100),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(context
+                    .watch<ProductListNotifier>().productList[index].productName,
+                                            style: GoogleFonts.roboto(
+                                                fontWeight: FontWeight.w800,
+                                                fontSize: size.height / 60)),
+                                        Text(context
+                                        .watch<ProductListNotifier>().productList[index].productQuatityLeft,
+                                            style: GoogleFonts.roboto(
+                                                fontSize: size.height / 70)),
+                                        Text("Rs ${context
+                                        .watch<ProductListNotifier>().productList[index].productPrice}",
+                                            style: GoogleFonts.roboto(
+                                                fontSize: size.height / 70)),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: size.height / 80,
-                                ),
-                              const  AddButtonWidget()
-                              ],
+                                  SizedBox(
+                                    height: size.height / 80,
+                                  ),
+                                  const AddButtonWidget()
+                                ],
+                              ),
                             ),
-                          ),
-        
-                   
-                        ],
-                      ),
-                    ),
-                  );
-                }),
+                          ],
+                        ),
+                      );
+                    }),
               ],
             ),
           ),
-        )
-
-        
-        );
+        ));
   }
 }

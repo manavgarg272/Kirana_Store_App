@@ -2,7 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:kirna_store_app/core/services/error/failure.dart';
 import 'package:kirna_store_app/core/services/network_services/network_call_service.dart';
 
+import 'package:kirna_store_app/feature/product_view/data/data_source/product_list_ds.dart';
+
 import 'package:kirna_store_app/feature/product_view/data/model/product_model.dart';
+import 'package:kirna_store_app/feature/product_view/data/repo_impl/product_list_repo_impl.dart';
+import 'package:kirna_store_app/feature/product_view/domain/use_case/product_list_use_case.dart';
 
 enum ProductListNotifierState { loading, loaded, error, initial }
 
@@ -28,15 +32,17 @@ class ProductListNotifier extends ChangeNotifier {
     _productListNotifierState = value;
     notifyListeners();
   }
-/* 
-  final ProductListUseCase _productListUseCase = ProductListUseCase(productRepo: ProductListRepoImpl(productDs: ProductListDsImpl())); */
+
+  final ProductListUseCase _productListUseCase = ProductListUseCase(productRepo:ProductListRepoImpl(
+    productListDs:ProductListDsImpl()
+  )); 
 
       
   void getProductListData({required String productCategory}) async {
     try {
       productListNotifierState = ProductListNotifierState.loading;
-      /* productList = await _productListUseCase(
-          ParamsForProductList(productCategory: productCategory)); */
+      productList = await _productListUseCase(
+          ParamsForProductList(productCategory: productCategory));
       productListNotifierState = ProductListNotifierState.loaded;
     } catch (e) {
       NetworkCallService.handleError(e, getException: (p0) {},
