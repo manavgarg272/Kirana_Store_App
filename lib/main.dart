@@ -1,17 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kirna_store_app/feature/authentication/presentation/choose_auth_screen.dart';
 import 'package:kirna_store_app/feature/authentication/presentation/manager/phone_authentication_notifier.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/home_screen.dart';
+import 'package:kirna_store_app/feature/home_screen/presentation/manager/product_category.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/widget/checkout_button.dart';
+import 'package:kirna_store_app/feature/product_subcategory/presentation/manager/product_sub_category.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-   
-  );
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -23,16 +24,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<PhoneAuthenticationNotifier>( create: (context) => PhoneAuthenticationNotifier()),
+        ChangeNotifierProvider<PhoneAuthenticationNotifier>(
+            create: (context) => PhoneAuthenticationNotifier()),
+        ChangeNotifierProvider<ProductCategoryNotifier>(
+            create: (context) => ProductCategoryNotifier()),
+
+            ChangeNotifierProvider<SubCategoryNotifier>(
+              create: (context) => SubCategoryNotifier()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
         theme: ThemeData(
-        
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: FirebaseAuth.instance.currentUser!=null ? const MyHomePage(title: 'Kirana Store App'):const PhoneNumberVerification(),
+        home: FirebaseAuth.instance.currentUser != null
+            ? const MyHomePage(title: 'Kirana Store App')
+            : const PhoneNumberVerification(),
       ),
     );
   }
@@ -57,18 +64,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
- 
-
   @override
   Widget build(BuildContext context) {
-    
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
@@ -76,22 +75,26 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: GoogleFonts.lobster(),
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () {
               FirebaseAuth.instance.signOut();
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const PhoneNumberVerification()));
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const PhoneNumberVerification()));
             },
           ),
         ],
       ),
 
-     floatingActionButton: CheckOutFloatingButton() ,
+      floatingActionButton: CheckOutFloatingButton(),
 
-      body:    HomeScreen(),
-    // This trailing comma makes auto-formatting nicer for build methods.
+      body: const HomeScreen(),
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

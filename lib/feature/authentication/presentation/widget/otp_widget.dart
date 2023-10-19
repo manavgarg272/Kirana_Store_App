@@ -72,67 +72,62 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
             ),
           ),
 
-
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: size.height/10),
-            child: Form(
-              key: formKey,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 30,
+          Form(
+            key: formKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: 30,
+              ),
+              child: PinCodeTextField(
+                appContext: context,
+                length: 6,
+                validator: (v) {
+                  if (v!.length < 3) {
+                    return "I'm from validator";
+                  } else {
+                    return null;
+                  }
+                },
+                pinTheme: PinTheme(
+                  shape: PinCodeFieldShape.box,
+                  borderRadius: BorderRadius.circular(5),
+                  fieldHeight: 50,
+                  fieldWidth: 40,
+                  activeFillColor: Colors.white,
+                  inactiveFillColor: Colors.white,
+                  inactiveColor: Colors.grey.shade400,
+                  activeColor: Colors.grey.shade400,
+                  selectedFillColor: Colors.white
                 ),
-                child: PinCodeTextField(
-                  appContext: context,
-                  length: 6,
-               
-                  validator: (v) {
-                    if (v!.length < 3) {
-                      return "I'm from validator";
-                    } else {
-                      return null;
-                    }
-                  },
-                  pinTheme: PinTheme(
-                    shape: PinCodeFieldShape.box,
-                    borderRadius: BorderRadius.circular(5),
-                    fieldHeight: 50,
-                    fieldWidth: 40,
-                    activeFillColor: Colors.white,
-                    inactiveFillColor: Colors.white,
-                    inactiveColor: Colors.grey.shade400,
-                    activeColor: Colors.grey.shade400,
-                    selectedFillColor: Colors.white
-                  ),
-                  cursorColor: Colors.black,
-                  animationDuration: const Duration(milliseconds: 300),
-                  enableActiveFill: true,
-                  controller: textEditingController, 
-                  keyboardType: TextInputType.number,
-                  boxShadows: const [
-                    BoxShadow(
-                      offset: Offset(0, 1),
-                      color: Colors.black12,
-                      blurRadius: 10,
-                    )
-                  ],
-                  onCompleted: (v) {
-                    debugPrint("Completed");
-                  },
-                  
-                  onChanged: (value) {
-                    debugPrint(value);
-                    setState(() {
-                      currentText = value;
-                    });
-                  },
-                  beforeTextPaste: (text) {
-                    debugPrint("Allowing to paste $text");
-                    //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                    //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                    return true;
-                  },
-                ),
+                cursorColor: Colors.black,
+                animationDuration: const Duration(milliseconds: 300),
+                enableActiveFill: true,
+                controller: textEditingController, 
+                keyboardType: TextInputType.number,
+                boxShadows: const [
+                  BoxShadow(
+                    offset: Offset(0, 1),
+                    color: Colors.black12,
+                    blurRadius: 10,
+                  )
+                ],
+                onCompleted: (v) {
+                  debugPrint("Completed");
+                },
+                
+                onChanged: (value) {
+                  debugPrint(value);
+                  setState(() {
+                    currentText = value;
+                  });
+                },
+                beforeTextPaste: (text) {
+                  debugPrint("Allowing to paste $text");
+                  //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                  //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                  return true;
+                },
               ),
             ),
           ),
@@ -149,35 +144,7 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
             ),
           ),
 
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "Didn't receive the code? ",
-                style: TextStyle(color: Colors.black54, fontSize: 15),
-              ),
-              TextButton(
-                onPressed: () =>{
-
-                },
-                child: const Text(
-                  "RESEND",
-                  style: TextStyle(
-                    color: Color(0xFF91D3B3),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              )
-            ],
-          ),
-
-          const SizedBox(
-            height: 14,
-          ),
+         
           Container(
             margin:
                 const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30),

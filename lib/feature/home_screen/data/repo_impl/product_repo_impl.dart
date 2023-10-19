@@ -1,7 +1,6 @@
 
 
 import 'package:kirna_store_app/feature/home_screen/data/data_source/product_ds.dart';
-import 'package:kirna_store_app/feature/home_screen/data/model/banner_model.dart';
 
 import 'package:kirna_store_app/feature/home_screen/domain/repo/product_repo.dart';
 
@@ -15,16 +14,9 @@ class ProductListRepoImpl extends ProductRepo {
 
  
   @override
-  Future<List<BannerModel>> getProductBannerList() async {
-    return  await productDs.getProductBannerListDs();
+  Future<List<CategoryModel>> getProductCategoryList()async  {
+   return await productDs.getProductCategoryListDs();
   }
-  
-  @override
-  Future<List<ProductCategoryModel>> getProductCategoryList()async  {
-   return  await productDs.getProductCategoryListDs();
-  }
-
-  
 
 }
 

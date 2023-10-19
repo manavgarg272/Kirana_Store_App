@@ -1,8 +1,10 @@
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/about_product.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/widget/add_button_widget.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/widget/checkout_button.dart';
+import 'package:kirna_store_app/feature/product_subcategory/presentation/manager/product_sub_category.dart';
+import 'package:provider/provider.dart';
 
 class ProductViewList extends StatefulWidget {
   const ProductViewList({super.key});
@@ -27,6 +29,7 @@ class _ProductViewListState extends State<ProductViewList> {
     'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
   ];
 
+  int current = 0;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -38,91 +41,150 @@ class _ProductViewListState extends State<ProductViewList> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          title: const Text("Product List"),
+          title: Text("Product List",
+              style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.w600, fontSize: size.height / 40)),
         ),
+        floatingActionButton: const CheckOutFloatingButton(),
+        body: SingleChildScrollView(
+          child: Container(
+     
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(5),
+                  height: 50,
+                  width: double.infinity,
+                  child: ListView.builder(
+                      itemCount: context.watch<SubCategoryNotifier>().subCategoryData.length,
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (ctx, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              current = index;
+                            });
 
-        floatingActionButton: CheckOutFloatingButton(),
-        body: Container(
-          child: ListView.builder(
-              itemCount: imgList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      elevation: 2,
-                      // gives rounded corner to modal bottom screen
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      builder: (BuildContext context) {
-                        // UDE : SizedBox instead of Container for whitespaces
-                        return AboutProductDetail();
-                      },
-                    );
-                  },
-                  child: Container(
-                    height: size.height / 5,
-                    padding: EdgeInsets.all(size.height / 100),
-                    margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        /* color: Colors.red, */
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        border: Border.all(color: Colors.blueAccent)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(
-                                size.height / 100,
-                                size.height / 65,
-                                size.height / 100,
-                                size.height / 100),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Image.network(imgList[index])),
+
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            margin: const EdgeInsets.all(5),
+                            width: size.height/7,
+                            height: size.height/30,
+                            decoration: BoxDecoration(
+                                /* color: current==index?Colors.red:Colors.white54, */
+                                border: Border.all(
+                                    width: 1.5,
+                                    color: current == index
+                                        ? Colors.purple
+                                        : Colors.grey.shade400),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                context.watch<SubCategoryNotifier>().subCategoryData[index].subCategoryName,
+                                style: GoogleFonts.roboto(
+                                    fontSize: size.height / 70,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
                           ),
+                        );
+                      }),
+                ),
+
+
+
+                ListView.builder(
+                itemCount: imgList.length,
+                shrinkWrap: true,
+                physics:const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        elevation: 2,
+                        // gives rounded corner to modal bottom screen
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        SizedBox(
-                          width: size.height / 60,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(size.height / 100),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Gold Marrie Bsicuit",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text("100 gm"),
-                                    Text("Rs 200"),
-                                  ],
+                        builder: (BuildContext context) {
+                          // UDE : SizedBox instead of Container for whitespaces
+                          return const AboutProductDetail();
+                        },
+                      );
+                    },
+                    child: Container(
+                      height: size.height / 5,
+                      padding: EdgeInsets.all(size.height / 100),
+                      margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                       
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(color: Colors.grey.shade300)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(
+                                  size.height / 100,
+                                  size.height / 65,
+                                  size.height / 100,
+                                  size.height / 100),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.network(imgList[index])),
+                            ),
+                          ),
+                          SizedBox(
+                            width: size.height / 60,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(size.height / 100),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Gold Marrie Bsicuit",
+                                        style: GoogleFonts.roboto(fontWeight: FontWeight.w800,
+                                        fontSize: size.height / 60)
+                                      ),
+                                      Text("100 gm",  style: GoogleFonts.roboto(
+                                      fontSize: size.height / 70)),
+                                      Text("Rs 200",  style: GoogleFonts.roboto(
+                                      fontSize: size.height / 70)),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: size.height / 80,
-                              ),
-                              AddButtonWidget()
-                            ],
+                                SizedBox(
+                                  height: size.height / 80,
+                                ),
+                              const  AddButtonWidget()
+                              ],
+                            ),
                           ),
-                        ),
-
-                        /* Expanded(child: Container(
-                child: Butt,
-              )) */
-                      ],
+        
+                   
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }),
-        ));
+                  );
+                }),
+              ],
+            ),
+          ),
+        )
+
+        
+        );
   }
 }

@@ -4,6 +4,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kirna_store_app/feature/order_summary/presentation/order_summary.dart';
 
 class CheckOutFloatingButton extends StatelessWidget {
@@ -26,7 +27,8 @@ class CheckOutFloatingButton extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(size.height/30,0,0,0),
       
         height: size.height/15,
-        child: Text("GO TO ORDER SUMMARY",style: TextStyle(fontWeight: FontWeight.bold,),),),
+        child: Text("GO TO ORDER SUMMARY", style: GoogleFonts.roboto(fontWeight: FontWeight.w800,
+        fontSize: size.height / 60),),),
     );
   }
 }

@@ -33,8 +33,7 @@ class _PhoneNumberVerificationWidgetState extends State<PhoneNumberVerificationW
         ),
 
         Container(
-          margin: EdgeInsets.fromLTRB(size.height / 10, size.height / 10,
-              size.height / 10, size.height / 40),
+          margin: EdgeInsets.symmetric(horizontal: size.height/30,vertical: size.height/50),
           child: TextFormField(
             controller: _phoneController,
             inputFormatters: [
@@ -58,9 +57,13 @@ class _PhoneNumberVerificationWidgetState extends State<PhoneNumberVerificationW
           ),
           
         ),
+
         SizedBox(
-            width: size.width / 3,
-            height: size.height / 20,
+          height: size.height/20,
+        ),
+        SizedBox(
+            width: size.width / 2,
+            height: size.height / 15,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(

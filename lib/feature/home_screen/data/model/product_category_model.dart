@@ -1,10 +1,27 @@
 
 
-class ProductCategoryModel{
+class CategoryModel {
+  String categoryId;
+  String categoryName;
+  String categoryImage;
+  CategoryModel(
+      {required this.categoryId,
+      required this.categoryName,
+      required this.categoryImage});
 
-  String productCategoryName;
-  String productCategoryImage;
-  String productCategoryType;
-  ProductCategoryModel({required this.productCategoryName,required this.productCategoryImage,required this.productCategoryType});
 
+    factory CategoryModel.fromJson(Map<String, dynamic>  map){
+      return CategoryModel(
+        categoryId: map["categoryId"]??"",
+        categoryImage: map["categoryImage"]??"",
+        categoryName: map["categoryName"]??"",
+      );
+    } 
+
+
+  Map<String, String> toJson() => {
+        "categoryId": categoryId,
+        "categoryName": categoryName,
+        "categoryImage": categoryImage
+      };
 }

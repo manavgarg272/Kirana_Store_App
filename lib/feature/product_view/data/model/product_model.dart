@@ -7,5 +7,8 @@ class ProductModel{
   String quantityMeasure;
   List<String> productImages;
   String productMainImage;
-  ProductModel(this.productName,this.productPrice,this.quantity,this.quantityLeft,this.quantityMeasure, this.productMainImage, this.productImages,);
+  ProductModel(this.productName,this.productPrice,this.quantity,this.quantityLeft,
+  this.quantityMeasure, this.productMainImage, this.productImages,);
+
+  
 }
