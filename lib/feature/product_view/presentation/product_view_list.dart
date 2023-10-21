@@ -34,11 +34,13 @@ class _ProductViewListState extends State<ProductViewList> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<ProductListNotifier>().getProductListData(
-        productCategory: context
-        .read<SubCategoryNotifier>()
-        .subCategoryData[0].subCategoryId
-      );
+      if (context.read<SubCategoryNotifier>().subCategoryData.isNotEmpty) {
+        context.read<ProductListNotifier>().getProductListData(
+            productCategory: context
+                .read<SubCategoryNotifier>()
+                .subCategoryData[0]
+                .subCategoryId);
+      }
     });
     super.initState();
   }
@@ -117,8 +119,8 @@ class _ProductViewListState extends State<ProductViewList> {
                       }),
                 ),
                 ListView.builder(
-                    itemCount: context
-                    .watch<ProductListNotifier>().productList .length,
+                    itemCount:
+                        context.watch<ProductListNotifier>().productList.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (BuildContext context, int index) {
@@ -159,17 +161,23 @@ class _ProductViewListState extends State<ProductViewList> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(context
-                    .watch<ProductListNotifier>().productList[index].productName,
+                                        Text(
+                                            context
+                                                .watch<ProductListNotifier>()
+                                                .productList[index]
+                                                .productName,
                                             style: GoogleFonts.roboto(
                                                 fontWeight: FontWeight.w800,
                                                 fontSize: size.height / 60)),
-                                        Text(context
-                                        .watch<ProductListNotifier>().productList[index].productQuatityLeft,
+                                        Text(
+                                            context
+                                                .watch<ProductListNotifier>()
+                                                .productList[index]
+                                                .productQuatityLeft,
                                             style: GoogleFonts.roboto(
                                                 fontSize: size.height / 70)),
-                                        Text("Rs ${context
-                                        .watch<ProductListNotifier>().productList[index].productPrice}",
+                                        Text(
+                                            "Rs ${context.watch<ProductListNotifier>().productList[index].productPrice}",
                                             style: GoogleFonts.roboto(
                                                 fontSize: size.height / 70)),
                                       ],
@@ -178,7 +186,7 @@ class _ProductViewListState extends State<ProductViewList> {
                                   SizedBox(
                                     height: size.height / 80,
                                   ),
-                                  const AddButtonWidget()
+                                   AddButtonWidget(productData:context.read<ProductListNotifier>().productList[index] ,)
                                 ],
                               ),
                             ),

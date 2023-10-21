@@ -51,6 +51,7 @@ try {
   QuerySnapshot querySnapshot  =
       await _firestore.collection(collectionName).where(fieldName, isEqualTo: filterName)
       .get();
+
   return querySnapshot;
 } catch (e) {
   print("Error reading data: $e");

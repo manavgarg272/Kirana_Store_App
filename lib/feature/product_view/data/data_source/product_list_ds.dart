@@ -18,13 +18,12 @@ class ProductListDsImpl extends ProductListDs {
           await fb.readDataFromCollectionWithFilterEqual(
               'AllProductData', 'subCategoryId', subCategoryId);
       for (var doc in snapshotData!.docs) {
-  
         var categoryData = doc.data() as Map<String, dynamic>;
-        productList.add(ProductModel.fromJson(categoryData));
+        var productId = doc.id;  
+        productList.add(ProductModel.fromJson(categoryData,productId));
       }
-      print("productlsitmodel ${productList.length}");
     } catch (e) {
-      print("productlsitmodel $e");
+      print("productListDs $e");
     }
     return productList;
   }

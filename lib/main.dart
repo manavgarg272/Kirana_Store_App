@@ -7,6 +7,7 @@ import 'package:kirna_store_app/feature/authentication/presentation/manager/phon
 import 'package:kirna_store_app/feature/home_screen/presentation/home_screen.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/manager/product_category.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/widget/checkout_button.dart';
+import 'package:kirna_store_app/feature/order_summary/presentation/manager/order_summary_manager.dart';
 import 'package:kirna_store_app/feature/product_subcategory/presentation/manager/product_sub_category.dart';
 import 'package:kirna_store_app/feature/product_view/presentation/manager/product_list_notifier.dart';
 import 'package:provider/provider.dart';
@@ -29,13 +30,12 @@ class MyApp extends StatelessWidget {
             create: (context) => PhoneAuthenticationNotifier()),
         ChangeNotifierProvider<ProductCategoryNotifier>(
             create: (context) => ProductCategoryNotifier()),
-
-            ChangeNotifierProvider<SubCategoryNotifier>(
-              create: (context) => SubCategoryNotifier()),
-
-              
-            ChangeNotifierProvider<ProductListNotifier>(
-              create: (context) => ProductListNotifier()),
+        ChangeNotifierProvider<SubCategoryNotifier>(
+            create: (context) => SubCategoryNotifier()),
+        ChangeNotifierProvider<OrderSummaryNotifier>(
+            create: (context) => OrderSummaryNotifier()),
+        ChangeNotifierProvider<ProductListNotifier>(
+            create: (context) => ProductListNotifier()),
       ],
       child: MaterialApp(
         theme: ThemeData(
