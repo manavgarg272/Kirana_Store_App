@@ -4,4 +4,6 @@ import 'package:kirna_store_app/feature/order_summary/data/model/user_order_mode
 
 abstract class OrderSummaryRepo{
   Future<void> userOrderSummary({required UserOrderPlacedModel userOrderPlacedModel});
+  Future<List<UserOrderPlacedModel>> getUserDataFromOrderSummary(
+    {required String userId});
 }

@@ -1,7 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kirna_store_app/feature/order_summary/data/model/user_order_model.dart';
 import 'package:kirna_store_app/feature/order_summary/presentation/manager/order_summary_manager.dart';
 import 'package:kirna_store_app/feature/order_summary/presentation/widget/order_summary_widget.dart';
+import 'package:kirna_store_app/feature/user_details/presentation/manager/location_manager.dart';
+import 'package:kirna_store_app/feature/user_details/presentation/manager/user_manager.dart';
+import 'package:kirna_store_app/feature/user_details/presentation/user_details.dart';
 import 'package:provider/provider.dart';
 
 class OrderSummaryWidget extends StatefulWidget {
@@ -13,7 +18,15 @@ class OrderSummaryWidget extends StatefulWidget {
 
 class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
     with SingleTickerProviderStateMixin {
- 
+  void _modalBottomSheetMenu() {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (builder) {
+          return const DraggableBottomSheet();
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -84,8 +97,7 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
               endIndent: size.height / 30,
             ),
             Text(
-              "Total Order Amount is Rs ${  context
-              .watch<OrderSummaryNotifier>().orderTotalAmount}",
+              "Total Order Amount is Rs ${context.watch<OrderSummaryNotifier>().orderTotalAmount}",
               style: GoogleFonts.roboto(
                   fontSize: size.height / 50, fontWeight: FontWeight.w500),
             ),
@@ -93,32 +105,99 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
               indent: size.height / 30,
               endIndent: size.height / 30,
             ),
-
             SizedBox(height: size.height / 40),
+            Builder(builder: (context) {
+              if (context.read<GetUserLocationNotifier>().userAddress.isEmpty) {
+                return Container();
+              }
+
+              return Container(
+                padding: EdgeInsets.all(size.height / 50),
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(color: Colors.grey.shade300)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Your Address",
+                      style: GoogleFonts.roboto(
+                          fontSize: size.height / 45,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(
+                      height: size.height / 80,
+                    ),
+                    Text(
+                        '${context.read<GetUserLocationNotifier>().userAddress[0].address}'),
+                  ],
+                ),
+              );
+            }),
+            SizedBox(
+              height: size.height / 40,
+            ),
             OutlinedButton(
-              
-              style: OutlinedButton.styleFrom(
-                
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(size.height/80))
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(size.height / 80))),
+                  side: BorderSide(
+                    width: 1.0,
+                    color: Colors.red.shade400,
+                    style: BorderStyle.solid,
+                  ),
                 ),
-                side: BorderSide(
-                  
-                  width: 1.0,
-                  color: Colors.red.shade400,
-                  style: BorderStyle.solid,
-                ),
-              ),
-              onPressed: (){
-
-       /* context.read<> */
-
-            }, child: Container(
-              height: size.height/30,
-              width: size.width/2,
-              alignment: Alignment.center,
-         
-              child: const Text("Place Order",style: TextStyle(color: Colors.red),)))
+                onPressed: () async {
+                  if (context
+                      .read<GetUserLocationNotifier>()
+                      .userAddress
+                      .isEmpty) {
+                    await context
+                        .read<LocationManagerNotifer>()
+                        .getCurrentPosition(context);
+                    _modalBottomSheetMenu();
+                    context
+                        .read<GetUserLocationNotifier>()
+                        .getUserLocationAddress(
+                            uuid: FirebaseAuth.instance.currentUser!.uid);
+                  } else {
+                    context
+                        .read<OrderSummaryNotifier>()
+                        .placeUserOrderToFirebase(
+                            userOrderPlacedModel: UserOrderPlacedModel(
+                                orderList: context
+                                    .read<OrderSummaryNotifier>()
+                                    .orderItemData,
+                                totalAmount: context
+                                    .read<OrderSummaryNotifier>()
+                                    .orderTotalAmount,
+                                userId: FirebaseAuth.instance.currentUser!.uid,
+                                orderStatus: 'INITIATED'));
+                  }
+                },
+                child: Container(
+                    height: size.height / 30,
+                    width: size.width / 2,
+                    alignment: Alignment.center,
+                    child: context
+                                    .watch<LocationManagerNotifer>()
+                                    .getLocationNotifier ==
+                                GetLocationStateNoitiferState.loading ||
+                            context
+                                    .watch<OrderSummaryNotifier>()
+                                    .orderSummaryNotifierState ==
+                                OrderSummaryNotifierState.loading
+                        ? const CircularProgressIndicator()
+                        : Text(
+                            context
+                                    .watch<GetUserLocationNotifier>()
+                                    .userAddress
+                                    .isEmpty
+                                ? "Get Address"
+                                : "Place Order",
+                            style: TextStyle(color: Colors.red),
+                          )))
           ],
         ),
       ),

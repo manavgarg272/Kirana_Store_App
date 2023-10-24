@@ -5,8 +5,7 @@ import 'package:kirna_store_app/feature/order_summary/data/model/user_order_mode
 import 'package:kirna_store_app/feature/order_summary/data/repo_impl/order_summary_repo_impl.dart';
 import 'package:kirna_store_app/feature/order_summary/domain/use_case/order_summary_use_case.dart';
 
-
-enum OrderSummaryNotifierState {initial , loading , loaded , error}
+enum OrderSummaryNotifierState { initial, loading, loaded, error }
 
 class OrderSummaryNotifier extends ChangeNotifier {
   final Map<String, OrderSummaryItemModel> _orderItemData =
@@ -45,19 +44,31 @@ class OrderSummaryNotifier extends ChangeNotifier {
     }
     notifyListeners();
   }
-
- final  OrderSummaryRepoUc  _orderSummaryRepoUc = OrderSummaryRepoUc(
-    orderSummaryRepo: OrderSummaryRepoImpl(
-      orderSummaryDs: OrderSummaryDsImpl()
-    )
-  );
-  void placeUserOrderToFirebase({required  UserOrderPlacedModel userOrderPlacedModel})async {
-try{
-  await _orderSummaryRepoUc(userOrderPlacedModel);
-}
-catch(e){
-  print("placeuserorder $e");
-}
+  void emptyOrderListMap(){
+    _orderItemData.clear();
+    notifyListeners();
   }
 
+  final OrderSummaryRepoUc _orderSummaryRepoUc = OrderSummaryRepoUc(
+      orderSummaryRepo:
+          OrderSummaryRepoImpl(orderSummaryDs: OrderSummaryDsImpl()));
+  OrderSummaryNotifierState _orderSummaryNotifierState =
+      OrderSummaryNotifierState.initial;
+  OrderSummaryNotifierState get orderSummaryNotifierState =>
+      _orderSummaryNotifierState;
+  set orderSummaryNotifierState(OrderSummaryNotifierState value) {
+    _orderSummaryNotifierState = value;
+    notifyListeners();
+  }
+
+  void placeUserOrderToFirebase(
+      {required UserOrderPlacedModel userOrderPlacedModel}) async {
+    try {
+      orderSummaryNotifierState = OrderSummaryNotifierState.loading;
+      await _orderSummaryRepoUc(userOrderPlacedModel);
+      orderSummaryNotifierState = OrderSummaryNotifierState.loaded;
+    } catch (e) {
+      print("placeuserorder $e");
+    }
+  }
 }

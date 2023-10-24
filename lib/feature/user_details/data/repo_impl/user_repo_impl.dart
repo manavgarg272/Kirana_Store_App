@@ -9,4 +9,9 @@ class UserDataRepoImpl extends UserDataRepo {
   Future<void> userDataRepo({required UserModelData userDataModel}) {
     return userDataDs.addUserDataDS(userDataModel: userDataModel);
   }
+  
+  @override
+  Future<List<UserModelData>> getUserDataLocationRepo({required String uuid}) async  {
+    return userDataDs.getUserDataLocationDs(uuid: uuid);
+  }
 }

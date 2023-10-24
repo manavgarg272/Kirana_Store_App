@@ -1,7 +1,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kirna_store_app/core/constant_files/constant_image.dart';
 import 'package:kirna_store_app/feature/authentication/presentation/manager/phone_authentication_notifier.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -15,7 +14,7 @@ class PhoneNumberVerificationWidget extends StatefulWidget {
 }
 
 class _PhoneNumberVerificationWidgetState extends State<PhoneNumberVerificationWidget> {
-  TextEditingController _phoneController = new TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final _phoneFormatter = MaskTextInputFormatter(
     mask: '+91 #### ### ###',
     filter: {'#': RegExp(r'[0-9]')},

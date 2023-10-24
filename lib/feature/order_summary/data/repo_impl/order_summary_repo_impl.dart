@@ -10,10 +10,14 @@ class OrderSummaryRepoImpl  extends OrderSummaryRepo{
   OrderSummaryRepoImpl({
    required this.orderSummaryDs
   });
-
   @override
   Future<void> userOrderSummary({required UserOrderPlacedModel userOrderPlacedModel}) {
    return orderSummaryDs.setUserDataToOrderSummary(orderPlacedModel: userOrderPlacedModel);
+  }
+  
+  @override
+  Future<List<UserOrderPlacedModel>> getUserDataFromOrderSummary({required String userId}) {
+    return orderSummaryDs.getUserDataFromOrderSummary(userId: userId);
   }
 
 

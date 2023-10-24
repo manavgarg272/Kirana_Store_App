@@ -49,14 +49,14 @@ child:SizedBox(
               return Builder(
                 builder: (BuildContext context) {
                   return Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
     
                       borderRadius: BorderRadius.all(Radius.circular(20))
                     ),
                     margin: const EdgeInsets.all(10),
                     child: ClipRRect(
                       
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
                       child: Image.network(i))
                   );
                 },

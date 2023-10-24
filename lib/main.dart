@@ -10,6 +10,9 @@ import 'package:kirna_store_app/feature/home_screen/presentation/widget/checkout
 import 'package:kirna_store_app/feature/order_summary/presentation/manager/order_summary_manager.dart';
 import 'package:kirna_store_app/feature/product_subcategory/presentation/manager/product_sub_category.dart';
 import 'package:kirna_store_app/feature/product_view/presentation/manager/product_list_notifier.dart';
+import 'package:kirna_store_app/feature/profile/presentation/profile.dart';
+import 'package:kirna_store_app/feature/user_details/presentation/manager/location_manager.dart';
+import 'package:kirna_store_app/feature/user_details/presentation/manager/user_manager.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -36,6 +39,11 @@ class MyApp extends StatelessWidget {
             create: (context) => OrderSummaryNotifier()),
         ChangeNotifierProvider<ProductListNotifier>(
             create: (context) => ProductListNotifier()),
+            ChangeNotifierProvider<LocationManagerNotifer>(
+              create: (context) => LocationManagerNotifer()),
+
+              ChangeNotifierProvider<GetUserLocationNotifier>(
+                create: (context) => GetUserLocationNotifier()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -69,10 +77,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   @override
   Widget build(BuildContext context) {
+    Size  size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
+/* drawer: HomeDrawerScreen(), */
+
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
@@ -86,17 +98,20 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon:const Icon(Icons.account_circle,size: 32,),
             onPressed: () {
-              FirebaseAuth.instance.signOut();
+              /* FirebaseAuth.instance.signOut();
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const PhoneNumberVerification()));
+                  builder: (context) => const PhoneNumberVerification())); */
+
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const MyProfilePageScreen()));
             },
           ),
         ],
       ),
 
-      floatingActionButton: CheckOutFloatingButton(),
+      floatingActionButton:const CheckOutFloatingButton(),
 
       body: const HomeScreen(),
       // This trailing comma makes auto-formatting nicer for build methods.

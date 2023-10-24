@@ -1,3 +1,5 @@
+import 'package:geocoding/geocoding.dart';
+
 class UserModelData {
   String? name;
   String? email;
@@ -5,18 +7,23 @@ class UserModelData {
   String? landMark;
   String? city;
   String? address;
-  String? logitude;
-  String? latitude;
-
+  double? logitude;
+  double? latitude;
+  Placemark? placeMark;
+  String? userId;
+  bool? locationPermission;
   UserModelData(
       {this.name,
       this.email,
       this.phoneNumber,
       this.landMark,
       this.city,
+      this.userId,
       this.address,
       this.logitude,
-      this.latitude});
+      this.latitude,
+      this.locationPermission,
+      this.placeMark});
 
   factory UserModelData.fromJson(Map<String, dynamic> map) {
     return UserModelData(
@@ -39,6 +46,9 @@ class UserModelData {
         "logitude": logitude,
         "address": address,
         "city": city,
-        "landMark": landMark
+        "landMark": landMark,
+        "userId": userId,
+        "placeMark": placeMark!.toJson(),
+        "locationPermission": locationPermission
       };
 }

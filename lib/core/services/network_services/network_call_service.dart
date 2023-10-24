@@ -135,10 +135,10 @@ class NetworkCallService {
           ),
         );
       } else if (e.type == DioExceptionType.connectionTimeout) {
-        getException(NetworkExceptions.requestTimeout());
+        getException(const NetworkExceptions.requestTimeout());
       } else {
         getException(
-            NetworkExceptions.unexpectedError(message: "Something Went Wrong"));
+            const NetworkExceptions.unexpectedError(message: "Something Went Wrong"));
       }
 
       //Handle Dio Exceptions

@@ -31,7 +31,7 @@ class _PhoneNumberVerificationState extends State<PhoneNumberVerification> {
       ),
       body: SingleChildScrollView(
 
-        child: context.watch<PhoneAuthenticationNotifier>().codeSentCheck? OtpVerificationWidget(phoneNumber: context.read<PhoneAuthenticationNotifier>().phoneNumber,):  PhoneNumberVerificationWidget()
+        child: context.watch<PhoneAuthenticationNotifier>().codeSentCheck? OtpVerificationWidget(phoneNumber: context.read<PhoneAuthenticationNotifier>().phoneNumber,):  const PhoneNumberVerificationWidget()
       ),
     );
   }

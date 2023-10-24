@@ -1,11 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:kirna_store_app/feature/banner_details/presentation/banner.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/manager/product_category.dart';
 import 'package:kirna_store_app/feature/product_subcategory/presentation/manager/product_sub_category.dart';
 import 'package:kirna_store_app/feature/product_view/presentation/product_view_list.dart';
+import 'package:kirna_store_app/feature/user_details/presentation/manager/location_manager.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<ProductCategoryNotifier>().getProductCategoryData();
+      context.read<GetUserLocationNotifier>().getUserLocationAddress(uuid: FirebaseAuth.instance.currentUser!.uid); 
     });
     super.initState();
   }
@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          BannerWidget(),
+        const BannerWidget(),
           GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             .categoryId);
 
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ProductViewList()));
+                        builder: (context) => const ProductViewList()));
                   },
                   child: Container(
                       margin: EdgeInsets.all(size.height / 100),

@@ -5,10 +5,10 @@ import 'package:kirna_store_app/feature/order_summary/data/model/order_summary_m
 
 class UserOrderPlacedModel{
 
-  String userId;
-  int totalAmount;
-  String orderStatus;
-  Map<String, OrderSummaryItemModel>  orderList;
+  final String userId;
+  final int totalAmount;
+  final String orderStatus;
+  final Map<String, OrderSummaryItemModel>  orderList;
 
   UserOrderPlacedModel({
    required this.orderList,
@@ -16,11 +16,41 @@ class UserOrderPlacedModel{
    required this.userId,
    required this.orderStatus
   });
-  Map<String, dynamic> toJson() => {
-   "userId":userId,
-   "totalAmount":totalAmount,
-   "orderList":orderList.values,
-   "orderStatus":orderStatus
-  };
 
+  factory UserOrderPlacedModel.fromJson(Map<String, dynamic> json) {
+    final Map<String, dynamic> orderListJson = json['orderList'];
+    final Map<String, OrderSummaryItemModel> orderList = Map.fromEntries(
+      orderListJson.entries.map(
+        (entry) => MapEntry(entry.key, OrderSummaryItemModel.fromJson(entry.value)),
+      ),
+    );
+
+    return UserOrderPlacedModel(
+      userId: json['userId'],
+      totalAmount: json['totalAmount'],
+      orderStatus: json['orderStatus'],
+      orderList: orderList,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> orderListJson = {};
+    orderList.forEach((key, value) {
+      orderListJson[key] = value.toJson();
+    });
+
+    return {
+      "userId": userId,
+      "totalAmount": totalAmount,
+      "orderStatus": orderStatus,
+      "orderList": orderListJson,
+    };
+  }
 }
+
+
+
+
+
+
+
