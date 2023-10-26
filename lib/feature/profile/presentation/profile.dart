@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kirna_store_app/feature/order_summary/presentation/order_history_page.dart';
 import 'package:kirna_store_app/feature/profile/presentation/widget/profile_widget.dart';
+import 'package:kirna_store_app/main.dart';
+import 'package:share_plus/share_plus.dart';
 
 class MyProfilePageScreen extends StatefulWidget {
   const MyProfilePageScreen({super.key});
@@ -53,10 +56,16 @@ class _MyProfilePageScreenState extends State<MyProfilePageScreen> {
               SizedBox(
                 height: size.height / 40,
               ),
-             const ProfileWidget(
-                icon: Icons.shopping_bag,
-                textOrder: 'Your order',
-              ),
+             GestureDetector(
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const OrderHistoryPage()));
+              },
+               child: const ProfileWidget(
+                  icon: Icons.shopping_bag,
+                  textOrder: 'Your order',
+                ),
+             ),
               SizedBox(
                 height: size.height / 40,
               ),
@@ -67,23 +76,29 @@ class _MyProfilePageScreenState extends State<MyProfilePageScreen> {
               SizedBox(
                 height: size.height / 40,
               ),
-              const ProfileWidget(
-                icon: Icons.share,
-                textOrder: 'Share the App',
+              GestureDetector(
+                onTap: (){
+                  Share.share('com.example.kirna_store_app');
+                },
+                child: const ProfileWidget(
+                  icon: Icons.share,
+                  textOrder: 'Share the App',
+                ),
               ),
               SizedBox(
                 height: size.height / 40,
               ),
-              const ProfileWidget(
-                icon: Icons.share,
-                textOrder: 'About Us',
-              ),
-              SizedBox(
-                height: size.height / 40,
-              ),
-              const ProfileWidget(
-                icon: Icons.logout,
-                textOrder: 'Log Out',
+          
+              GestureDetector(
+                onTap: ()async {
+               await  FirebaseAuth.instance.signOut();
+                 Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const MyApp()));
+                },
+                child: const ProfileWidget(
+                  icon: Icons.logout,
+                  textOrder: 'Log Out',
+                ),
               ),
             ],
           ),

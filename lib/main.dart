@@ -7,6 +7,7 @@ import 'package:kirna_store_app/feature/authentication/presentation/manager/phon
 import 'package:kirna_store_app/feature/home_screen/presentation/home_screen.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/manager/product_category.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/widget/checkout_button.dart';
+import 'package:kirna_store_app/feature/order_summary/presentation/manager/order_history_manager.dart';
 import 'package:kirna_store_app/feature/order_summary/presentation/manager/order_summary_manager.dart';
 import 'package:kirna_store_app/feature/product_subcategory/presentation/manager/product_sub_category.dart';
 import 'package:kirna_store_app/feature/product_view/presentation/manager/product_list_notifier.dart';
@@ -39,11 +40,12 @@ class MyApp extends StatelessWidget {
             create: (context) => OrderSummaryNotifier()),
         ChangeNotifierProvider<ProductListNotifier>(
             create: (context) => ProductListNotifier()),
-            ChangeNotifierProvider<LocationManagerNotifer>(
-              create: (context) => LocationManagerNotifer()),
-
-              ChangeNotifierProvider<GetUserLocationNotifier>(
-                create: (context) => GetUserLocationNotifier()),
+        ChangeNotifierProvider<LocationManagerNotifer>(
+            create: (context) => LocationManagerNotifer()),
+        ChangeNotifierProvider<GetUserLocationNotifier>(
+            create: (context) => GetUserLocationNotifier()),
+        ChangeNotifierProvider<OrderHistoryNoitifier>(
+            create: (context) => OrderHistoryNoitifier()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -77,10 +79,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
-    Size  size = MediaQuery.of(context).size;
+   
     return Scaffold(
       backgroundColor: Colors.white,
 /* drawer: HomeDrawerScreen(), */
@@ -98,20 +99,20 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: [
           IconButton(
-            icon:const Icon(Icons.account_circle,size: 32,),
+            icon: const Icon(
+              Icons.account_circle,
+              size: 32,
+            ),
             onPressed: () {
-              /* FirebaseAuth.instance.signOut();
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const PhoneNumberVerification())); */
-
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const MyProfilePageScreen()));
+          
+              Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>  MyProfilePageScreen()));
             },
           ),
         ],
       ),
 
-      floatingActionButton:const CheckOutFloatingButton(),
+      floatingActionButton: const CheckOutFloatingButton(),
 
       body: const HomeScreen(),
       // This trailing comma makes auto-formatting nicer for build methods.

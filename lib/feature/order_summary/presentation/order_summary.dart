@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kirna_store_app/feature/order_summary/data/model/user_order_model.dart';
 import 'package:kirna_store_app/feature/order_summary/presentation/manager/order_summary_manager.dart';
+import 'package:kirna_store_app/feature/order_summary/presentation/order_success_widget.dart';
 import 'package:kirna_store_app/feature/order_summary/presentation/widget/order_summary_widget.dart';
 import 'package:kirna_store_app/feature/user_details/presentation/manager/location_manager.dart';
 import 'package:kirna_store_app/feature/user_details/presentation/manager/user_manager.dart';
@@ -137,6 +138,66 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
             SizedBox(
               height: size.height / 40,
             ),
+            /* OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(size.height / 80)),
+                ),
+                side: BorderSide(
+                  width: 1.0,
+                  color: Colors.red.shade400,
+                  style: BorderStyle.solid,
+                ),
+              ),
+              onPressed: () async {
+                if (context.watch<GetUserLocationNotifier>().userAddress.isEmpty) {
+                  await context.read<LocationManagerNotifer>().getCurrentPosition(context);
+                  _modalBottomSheetMenu();
+                  await context.read<GetUserLocationNotifier>().getUserLocationAddress(
+                    uuid: FirebaseAuth.instance.currentUser!.uid,
+                  );
+                } else {
+                  await context.read<OrderSummaryNotifier>().placeUserOrderToFirebase(
+                    userOrderPlacedModel: UserOrderPlacedModel(
+                      orderList: context.read<OrderSummaryNotifier>().orderItemData,
+                      totalAmount: context.read<OrderSummaryNotifier>().orderTotalAmount,
+                      userId: FirebaseAuth.instance.currentUser!.uid,
+                      orderStatus: 'INITIATED',
+                    ),
+                  );
+            
+                  if (context.read<OrderSummaryNotifier>().orderSummaryNotifierState ==
+                      OrderSummaryNotifierState.loaded) {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (BuildContext context) {
+                        return OrderSuccessDialog();
+                      },
+                    );
+            
+                    context.read<OrderSummaryNotifier>().orderSummaryNotifierState = OrderSummaryNotifierState.initial;
+                  }
+                }
+              },
+              child: Container(
+                height: size.height / 30,
+                width: size.width / 2,
+                alignment: Alignment.center,
+                child: (context.watch<LocationManagerNotifer>().getLocationNotifier ==
+                            GetLocationStateNoitiferState.loading ||
+                        context.watch<OrderSummaryNotifier>().orderSummaryNotifierState ==
+                            OrderSummaryNotifierState.loading)
+                    ? const CircularProgressIndicator()
+                    : Text(
+                        context.watch<GetUserLocationNotifier>().userAddress.isEmpty
+                            ? "Get Address"
+                            : "Place Order",
+                        style: const TextStyle(color: Colors.red),
+                      ),
+              ),
+            )
+             */
             OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -161,11 +222,15 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                         .read<GetUserLocationNotifier>()
                         .getUserLocationAddress(
                             uuid: FirebaseAuth.instance.currentUser!.uid);
-                  } else {
-                    context
+                  }
+               
+                  else {
+             
+                    await context
                         .read<OrderSummaryNotifier>()
                         .placeUserOrderToFirebase(
                             userOrderPlacedModel: UserOrderPlacedModel(
+                              createdAt: DateTime.now(),
                                 orderList: context
                                     .read<OrderSummaryNotifier>()
                                     .orderItemData,
@@ -174,20 +239,36 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                                     .orderTotalAmount,
                                 userId: FirebaseAuth.instance.currentUser!.uid,
                                 orderStatus: 'INITIATED'));
+            
+               
+                              if (context
+                            .read<OrderSummaryNotifier>()
+                            .orderSummaryNotifierState ==
+                        OrderSummaryNotifierState.loaded) {
+                          context
+                            .read<OrderSummaryNotifier>().emptyOrderListMap();
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return OrderSuccessDialog();
+                            });
+                            context.read<OrderSummaryNotifier>().orderSummaryNotifierState = OrderSummaryNotifierState.initial;
+                    }
                   }
                 },
                 child: Container(
                     height: size.height / 30,
                     width: size.width / 2,
                     alignment: Alignment.center,
-                    child: context
+                    child: (context
                                     .watch<LocationManagerNotifer>()
                                     .getLocationNotifier ==
                                 GetLocationStateNoitiferState.loading ||
                             context
                                     .watch<OrderSummaryNotifier>()
                                     .orderSummaryNotifierState ==
-                                OrderSummaryNotifierState.loading
+                                OrderSummaryNotifierState.loading)
                         ? const CircularProgressIndicator()
                         : Text(
                             context
@@ -196,7 +277,7 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                                     .isEmpty
                                 ? "Get Address"
                                 : "Place Order",
-                            style: TextStyle(color: Colors.red),
+                            style: const TextStyle(color: Colors.red),
                           )))
           ],
         ),

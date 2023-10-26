@@ -54,6 +54,7 @@ dependencies:
   cloud_firestore: ^4.9.3
   geolocator: ^8.2.0
   geocoding: ^2.0.4
+  share_plus: ^7.2.1
 
 
 dev_dependencies:

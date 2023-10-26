@@ -8,6 +8,8 @@ import 'package:kirna_store_app/feature/order_summary/domain/use_case/order_summ
 enum OrderSummaryNotifierState { initial, loading, loaded, error }
 
 class OrderSummaryNotifier extends ChangeNotifier {
+
+  
   final Map<String, OrderSummaryItemModel> _orderItemData =
       <String, OrderSummaryItemModel>{};
   Map<String, OrderSummaryItemModel> get orderItemData => _orderItemData;
@@ -61,7 +63,7 @@ class OrderSummaryNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  void placeUserOrderToFirebase(
+  Future<void> placeUserOrderToFirebase(
       {required UserOrderPlacedModel userOrderPlacedModel}) async {
     try {
       orderSummaryNotifierState = OrderSummaryNotifierState.loading;
