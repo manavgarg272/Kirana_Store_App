@@ -20,9 +20,12 @@ class _AddButtonWidgetState extends State<AddButtonWidget> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     if(context.read<OrderSummaryNotifier>().orderItemData.containsKey(widget.productData.productId)){  
       addValue = context.read<OrderSummaryNotifier>().orderItemData[widget.productData.productId]!.productQuantity;
+      setState(() {
+        
+      });
     }
     });
-    
+    print("addvalue:  ${widget.productData.productId} ${context.read<OrderSummaryNotifier>().orderItemData.containsKey(widget.productData.productId)}");
     super.initState();
   }
 
@@ -30,6 +33,7 @@ class _AddButtonWidgetState extends State<AddButtonWidget> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+   
     return addValue == 0
         ? InkWell(
             onTap: () {

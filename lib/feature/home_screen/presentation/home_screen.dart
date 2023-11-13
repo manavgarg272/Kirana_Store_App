@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kirna_store_app/feature/banner_details/presentation/banner.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/manager/product_category.dart';
 import 'package:kirna_store_app/feature/product_subcategory/presentation/manager/product_sub_category.dart';
+import 'package:kirna_store_app/feature/product_view/presentation/manager/product_list_notifier.dart';
 import 'package:kirna_store_app/feature/product_view/presentation/product_view_list.dart';
 import 'package:kirna_store_app/feature/user_details/presentation/manager/location_manager.dart';
 import 'package:provider/provider.dart';
@@ -46,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (BuildContext ctx, index) {
                 return GestureDetector(
                   onTap: () async {
+                    context.read<ProductListNotifier>().productList.clear();
                     await context.read<SubCategoryNotifier>().getSubCategoryData(
                         categoryData: context
                             .read<ProductCategoryNotifier>()

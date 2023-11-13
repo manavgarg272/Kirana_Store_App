@@ -38,7 +38,7 @@ class ProductListNotifier extends ChangeNotifier {
   )); 
 
       
-  void getProductListData({required String productCategory}) async {
+ Future< void> getProductListData({required String productCategory}) async {
     try {
       productListNotifierState = ProductListNotifierState.loading;
       productList = await _productListUseCase(
