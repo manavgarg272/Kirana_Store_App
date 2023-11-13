@@ -30,7 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-        const BannerWidget(),
+        /* const BannerWidget(), */
+        SizedBox(height: size.height/15,),
           GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(

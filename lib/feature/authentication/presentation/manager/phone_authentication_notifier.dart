@@ -38,6 +38,7 @@ class PhoneAuthenticationNotifier extends ChangeNotifier {
 
   Future<void> signInWithPhoneNumber(String phoneNumberVal) async {
     try {
+      print("phonenumbertext$phoneNumberVal");
       phoneAuthenticationNotifierState = PhoneAuthenticationNotifierState.loading;
       phoneNumber=phoneNumberVal;
       await _auth.verifyPhoneNumber(

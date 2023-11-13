@@ -23,13 +23,14 @@ class CheckOutFloatingButton extends StatelessWidget {
         alignment: Alignment.center,
         
         decoration: BoxDecoration(
-          color:  Theme.of(context).colorScheme.inversePrimary,
+          color:  Colors.blue.shade400,
+
           borderRadius: const BorderRadius.all(Radius.circular(10))
         ),
         margin: EdgeInsets.fromLTRB(size.height/30,0,0,0),
       
         height: size.height/15,
-        child: Text("GO TO ORDER SUMMARY", style: GoogleFonts.roboto(fontWeight: FontWeight.w800,
+        child: Text("GO TO ORDER SUMMARY", style: GoogleFonts.roboto(fontWeight: FontWeight.w800, color: Colors.white,
         fontSize: size.height / 60),),),
     );
   }

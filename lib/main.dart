@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: FirebaseAuth.instance.currentUser != null
-            ? const MyHomePage(title: 'Kirana Store App')
+            ?  MyHomePage()
             : const PhoneNumberVerification(),
       ),
     );
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -72,7 +72,7 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -84,29 +84,24 @@ class _MyHomePageState extends State<MyHomePage> {
    
     return Scaffold(
       backgroundColor: Colors.white,
-/* drawer: HomeDrawerScreen(), */
-
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
+        toolbarHeight: 70,
+        backgroundColor: Colors.blue.shade300,
         title: Text(
-          widget.title,
-          style: GoogleFonts.lobster(),
+         'SHRI SHYAM STORE',
+          style: GoogleFonts.roboto(color: Colors.white,fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
             icon: const Icon(
               Icons.account_circle,
               size: 32,
+              color: Colors.white,
             ),
             onPressed: () {
           
               Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>  MyProfilePageScreen()));
+                    builder: (context) =>  const MyProfilePageScreen()));
             },
           ),
         ],

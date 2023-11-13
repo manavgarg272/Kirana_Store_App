@@ -29,7 +29,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          backgroundColor: Colors.blue.shade300,
           title: Text(
             "Order History",
             style: GoogleFonts.roboto(

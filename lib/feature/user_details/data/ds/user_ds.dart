@@ -26,8 +26,8 @@ class UserDataDsImpl extends UserDataDs {
       FirestoreDatabase fb = FirestoreDatabase();
       QuerySnapshot ? querySnapshot = await fb.readDataFromCollectionWithFilterEqual('UserDataLocation', 'userId', uuid);
       for (var doc in querySnapshot!.docs) {
-        var docsData = doc.data()as Map<String, dynamic>;
-        addressList.add(UserModelData.fromJson(docsData));
+        var docsData = doc.data() as Map<String, dynamic>;
+        addressList.add(UserModelData.fromJson(docsData, doc.id));
       } 
     } catch (e) {
       print("usermodeldata $e");

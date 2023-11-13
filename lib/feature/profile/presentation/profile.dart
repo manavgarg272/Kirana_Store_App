@@ -19,7 +19,7 @@ class _MyProfilePageScreenState extends State<MyProfilePageScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Colors.blue.shade300,
         title: Text(
           "My Profile",
           style: GoogleFonts.roboto(

@@ -9,6 +9,7 @@ class UserOrderPlacedModel{
   final int totalAmount;
   final String orderStatus;
   final DateTime createdAt;
+  final String locationId;
   final Map<String, OrderSummaryItemModel>  orderList;
 
   UserOrderPlacedModel({
@@ -16,7 +17,8 @@ class UserOrderPlacedModel{
    required this.totalAmount,
    required this.userId,
    required this.orderStatus,
-   required this.createdAt
+   required this.createdAt,
+   required this.locationId
   });
 
   factory UserOrderPlacedModel.fromJson(Map<String, dynamic> json) {
@@ -33,8 +35,9 @@ class UserOrderPlacedModel{
       userId: json['userId'],
       totalAmount: json['totalAmount'],
       orderStatus: json['orderStatus'],
-      createdAt: json['createdAt']??DateTime.now(),
+      createdAt: json['createdAt'].toDate()??DateTime.now(),
       orderList: orderList,
+      locationId: json['locationId'] ??"",
     );
   }
 
@@ -49,7 +52,8 @@ class UserOrderPlacedModel{
       "totalAmount": totalAmount,
       "orderStatus": orderStatus,
       "orderList": orderListJson,
-      "createdAt":createdAt
+      "createdAt":createdAt,
+      "locationId": locationId
     };
   }
 }

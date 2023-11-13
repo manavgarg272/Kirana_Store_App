@@ -34,7 +34,7 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Colors.blue.shade300,
         title: Text(
           "Order Summary List",
           style: GoogleFonts.roboto(
@@ -138,66 +138,7 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
             SizedBox(
               height: size.height / 40,
             ),
-            /* OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(size.height / 80)),
-                ),
-                side: BorderSide(
-                  width: 1.0,
-                  color: Colors.red.shade400,
-                  style: BorderStyle.solid,
-                ),
-              ),
-              onPressed: () async {
-                if (context.watch<GetUserLocationNotifier>().userAddress.isEmpty) {
-                  await context.read<LocationManagerNotifer>().getCurrentPosition(context);
-                  _modalBottomSheetMenu();
-                  await context.read<GetUserLocationNotifier>().getUserLocationAddress(
-                    uuid: FirebaseAuth.instance.currentUser!.uid,
-                  );
-                } else {
-                  await context.read<OrderSummaryNotifier>().placeUserOrderToFirebase(
-                    userOrderPlacedModel: UserOrderPlacedModel(
-                      orderList: context.read<OrderSummaryNotifier>().orderItemData,
-                      totalAmount: context.read<OrderSummaryNotifier>().orderTotalAmount,
-                      userId: FirebaseAuth.instance.currentUser!.uid,
-                      orderStatus: 'INITIATED',
-                    ),
-                  );
-            
-                  if (context.read<OrderSummaryNotifier>().orderSummaryNotifierState ==
-                      OrderSummaryNotifierState.loaded) {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return OrderSuccessDialog();
-                      },
-                    );
-            
-                    context.read<OrderSummaryNotifier>().orderSummaryNotifierState = OrderSummaryNotifierState.initial;
-                  }
-                }
-              },
-              child: Container(
-                height: size.height / 30,
-                width: size.width / 2,
-                alignment: Alignment.center,
-                child: (context.watch<LocationManagerNotifer>().getLocationNotifier ==
-                            GetLocationStateNoitiferState.loading ||
-                        context.watch<OrderSummaryNotifier>().orderSummaryNotifierState ==
-                            OrderSummaryNotifierState.loading)
-                    ? const CircularProgressIndicator()
-                    : Text(
-                        context.watch<GetUserLocationNotifier>().userAddress.isEmpty
-                            ? "Get Address"
-                            : "Place Order",
-                        style: const TextStyle(color: Colors.red),
-                      ),
-              ),
-            )
-             */
+      
             OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -231,6 +172,7 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                         .placeUserOrderToFirebase(
                             userOrderPlacedModel: UserOrderPlacedModel(
                               createdAt: DateTime.now(),
+                              locationId:context.read<GetUserLocationNotifier>().userAddress[0].locationId??"",
                                 orderList: context
                                     .read<OrderSummaryNotifier>()
                                     .orderItemData,

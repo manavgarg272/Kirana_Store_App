@@ -19,11 +19,11 @@ class _OrderHistoryListPageState extends State<OrderHistoryListPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Colors.blue.shade300,
         title: Text(
           "Order History List",
           style: GoogleFonts.roboto(
-              fontWeight: FontWeight.w600, fontSize: size.height / 40),
+              fontWeight: FontWeight.w600, fontSize: size.height / 40,color: Colors.black),
         ),
       ),
       body: SingleChildScrollView(

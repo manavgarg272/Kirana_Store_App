@@ -17,9 +17,7 @@ class OtpVerificationWidget extends StatefulWidget {
 
 class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
   TextEditingController textEditingController = TextEditingController();
-  // ..text = "123456";
 
-  // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
 
   bool hasError = false;
@@ -42,17 +40,19 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
     Size size = MediaQuery.of(context).size;
     return  Column(
         children: [
-          Container(
+          /* Container(
             width: size.width/2,
             margin: EdgeInsets.symmetric(vertical: size.height/20),
             child: Image.asset(ConstantImageFile.otpasset),
-          ),
+          ), */
+          /* Text(), */
+          SizedBox(height: size.height/5,),
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
             child: RichText(
               text: TextSpan(
-                text: "Enter the code sent to ",
+                text: "We have sent verification code to  \n",
                 children: [
                   TextSpan(
                     text: "${widget.phoneNumber}",
@@ -71,7 +71,7 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
               textAlign: TextAlign.center,
             ),
           ),
-
+          SizedBox(height: size.height/20,),
           Form(
             key: formKey,
             child: Padding(
@@ -149,18 +149,10 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
             margin:
                 const EdgeInsets.symmetric(vertical: 16.0, horizontal: 30),
                 decoration: BoxDecoration(
-                  color: Colors.green.shade300,
+                  color: Colors.blue.shade300,
                   borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.green.shade200,
-                        offset: const Offset(1, -2),
-                        blurRadius: 5),
-                    BoxShadow(
-                        color: Colors.green.shade200,
-                        offset: const Offset(-1, 2),
-                        blurRadius: 5)
-                  ]),
+                  
+                ),
             child: ButtonTheme(
               height: 50,
               child: TextButton(
@@ -177,7 +169,7 @@ class _OtpVerificationWidgetState extends State<OtpVerificationWidget> {
                         if( FirebaseAuth.instance.currentUser!=null ){
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Kirana Store App')),
+                            MaterialPageRoute(builder: (context) => const MyHomePage()),
                           );
                         }
                       

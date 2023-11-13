@@ -11,6 +11,7 @@ class UserModelData {
   double? latitude;
   Placemark? placeMark;
   String? userId;
+  String ?locationId;
   bool? locationPermission;
   UserModelData(
       {this.name,
@@ -22,10 +23,11 @@ class UserModelData {
       this.address,
       this.logitude,
       this.latitude,
+      this.locationId,
       this.locationPermission,
       this.placeMark});
 
-  factory UserModelData.fromJson(Map<String, dynamic> map) {
+  factory UserModelData.fromJson(Map<String, dynamic> map, String locationId) {
     return UserModelData(
       name: map["name"],
       email: map["email"],
@@ -35,6 +37,7 @@ class UserModelData {
       address: map["address"],
       logitude: map["longitude"],
       latitude: map["latitude"],
+      locationId:locationId,
     );
   }
 
@@ -49,6 +52,6 @@ class UserModelData {
         "landMark": landMark,
         "userId": userId,
         "placeMark": placeMark!.toJson(),
-        "locationPermission": locationPermission
+        "locationPermission": locationPermission,
       };
 }
