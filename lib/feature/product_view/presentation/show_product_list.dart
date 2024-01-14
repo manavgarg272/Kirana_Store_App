@@ -24,7 +24,7 @@ class _ProductListViewState extends State<ProductListView> {
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
         return Container(
-          height: size.height / 5,
+          height: size.height / 5.3,
           padding: EdgeInsets.all(size.height / 100),
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -35,7 +35,7 @@ class _ProductListViewState extends State<ProductListView> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
+              /* Expanded(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(
                       size.height / 90,
@@ -47,10 +47,9 @@ class _ProductListViewState extends State<ProductListView> {
                       child: Image.network(    widget.productListData[index]
                       .imagesList[0] )),
                 ),
-              ),
-              SizedBox(
-                width: size.height / 60,
-              ),
+              ), */
+              /* 
+               */
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,18 +70,21 @@ class _ProductListViewState extends State<ProductListView> {
                             widget.productListData[index]
                                   .productQuatityLeft,
                               style: GoogleFonts.roboto(
-                                  fontSize: size.height / 70)),
-                          Text(
+                                  fontSize: size.height / 60)),
+                          SizedBox(height: 10,),
+                                  Text(
                               "Rs ${  widget.productListData[index].productPrice}",
                               style: GoogleFonts.roboto(
-                                  fontSize: size.height / 70)),
+                                  fontSize: size.height / 60,color: Colors.green,fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ),
                     SizedBox(
                       height: size.height / 80,
                     ),
-                     AddButtonWidget(productData:  widget.productListData[index] ,)
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: AddButtonWidget(productData:  widget.productListData[index] ,))
                   ],
                 ),
               ),

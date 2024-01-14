@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kirna_store_app/feature/order_summary/presentation/manager/order_summary_manager.dart';
 import 'package:kirna_store_app/feature/order_summary/presentation/order_summary.dart';
+
 import 'package:provider/provider.dart';
 
 class CheckOutFloatingButton extends StatelessWidget {
@@ -15,7 +16,9 @@ class CheckOutFloatingButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
-    return context.watch<OrderSummaryNotifier>().orderItemData.isEmpty?Container():   GestureDetector(
+    return context.watch<OrderSummaryNotifier>().orderItemData.isEmpty?Container(
+    
+    ): GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OrderSummaryWidget()));
       },

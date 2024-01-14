@@ -14,10 +14,7 @@ class BannerDsImpl extends BannerDs {
   @override
   Future<List<BannerModel>> getProductBannerListDs() async {
     try{
-      FirestoreDatabase fb =  FirestoreDatabase();
-      
-
-      
+      FirestoreDatabase fb =  FirestoreDatabase();      
 
     }
     catch(e){

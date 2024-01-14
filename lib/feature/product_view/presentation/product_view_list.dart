@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kirna_store_app/feature/home_screen/presentation/manager/product_category.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/widget/checkout_button.dart';
 import 'package:kirna_store_app/feature/product_subcategory/presentation/manager/product_sub_category.dart';
 import 'package:kirna_store_app/feature/product_view/presentation/manager/product_list_notifier.dart';
@@ -7,7 +8,8 @@ import 'package:kirna_store_app/feature/product_view/presentation/show_product_l
 import 'package:provider/provider.dart';
 
 class ProductViewList extends StatefulWidget {
-  const ProductViewList({super.key});
+  final String categoryId;
+  const ProductViewList({super.key, required this.categoryId});
 
   @override
   State<ProductViewList> createState() => _ProductViewListState();
@@ -18,24 +20,50 @@ class _ProductViewListState extends State<ProductViewList> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (context.read<SubCategoryNotifier>().subCategoryData.isNotEmpty) {
+
+    context.read<ProductListNotifier>().productList.clear(); 
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    if(!context.read<SubCategoryNotifier>().subCategoryMapData.containsKey(widget.categoryId)){
+      await context
+          .read<SubCategoryNotifier>()
+          .getSubCategoryData(
+              categoryData:widget
+                  .categoryId);
+      if (context.read<SubCategoryNotifier>().subCategoryMapData[widget.categoryId]!.isNotEmpty) {
         context.read<ProductListNotifier>().getProductListData(
             productCategory: context
                 .read<SubCategoryNotifier>()
-                .subCategoryData[0]
+                .subCategoryMapData[widget.categoryId]![0]
                 .subCategoryId);
       }
+    }  
+    else{
+      if (context.read<SubCategoryNotifier>().subCategoryMapData[widget.categoryId]!.isNotEmpty) {
+        context.read<ProductListNotifier>().getProductListData(
+            productCategory: context
+                .read<SubCategoryNotifier>()
+                .subCategoryMapData[widget.categoryId]![0]
+                .subCategoryId);
+      }
+    }
+     
     });
     super.initState();
   }
 
+
+
+  
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+  
+   final subCategoryList = context
+   .watch<SubCategoryNotifier>()
+   .subCategoryMapData[widget.categoryId];
+  
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue.shade300,
           title: Text("Product List",
               style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w600, fontSize: size.height / 40)),
@@ -49,10 +77,8 @@ class _ProductViewListState extends State<ProductViewList> {
                 height: 50,
                 width: double.infinity,
                 child: ListView.builder(
-                    itemCount: context
-                        .watch<SubCategoryNotifier>()
-                        .subCategoryData
-                        .length,
+                    itemCount:subCategoryList
+                        ?.length??0,
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (ctx, index) {
@@ -64,10 +90,8 @@ class _ProductViewListState extends State<ProductViewList> {
                           await context
                               .read<ProductListNotifier>()
                               .getProductListData(
-                                  productCategory: context
-                                      .read<SubCategoryNotifier>()
-                                      .subCategoryData[index]
-                                      .subCategoryId);
+                                  productCategory: subCategoryList?[index]
+                                      .subCategoryId??"");
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
@@ -84,10 +108,8 @@ class _ProductViewListState extends State<ProductViewList> {
                           child: Container(
                             alignment: Alignment.center,
                             child: Text(
-                              context
-                                  .watch<SubCategoryNotifier>()
-                                  .subCategoryData[index]
-                                  .subCategoryName,
+                              subCategoryList?[index]
+                                  .subCategoryName??"",
                               style: GoogleFonts.roboto(
                                   fontSize: size.height / 70,
                                   fontWeight: FontWeight.bold),

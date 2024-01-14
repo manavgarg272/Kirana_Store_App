@@ -30,7 +30,6 @@ class GetUserLocationNotifier extends ChangeNotifier {
     try {
       getUserLocationNotifierState = GetUserLocationNotifierState.loading;
       userAddress = await _getLocationUseCase(uuid);
-     
       getUserLocationNotifierState = GetUserLocationNotifierState.laoded;
     } catch (e) {
       print("getuserlocationaddress $e");

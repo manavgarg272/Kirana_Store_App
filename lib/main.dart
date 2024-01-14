@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kirna_store_app/core/services/firebase_service/firebase_auth_service.dart';
 import 'package:kirna_store_app/feature/authentication/presentation/choose_auth_screen.dart';
 import 'package:kirna_store_app/feature/authentication/presentation/manager/phone_authentication_notifier.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/home_screen.dart';
@@ -15,10 +15,10 @@ import 'package:kirna_store_app/feature/profile/presentation/profile.dart';
 import 'package:kirna_store_app/feature/user_details/presentation/manager/location_manager.dart';
 import 'package:kirna_store_app/feature/user_details/presentation/manager/user_manager.dart';
 import 'package:provider/provider.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await FirebaseAuthenticationService.initializeValue();
+  await FirebaseAuthenticationService.fetchRemoteConfigDetails();
   runApp(const MyApp());
 }
 
@@ -50,11 +50,23 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          pageTransitionsTheme: const PageTransitionsTheme(builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          }),
           useMaterial3: true,
         ),
-        home: FirebaseAuth.instance.currentUser != null
-            ?  MyHomePage()
-            : const PhoneNumberVerification(),
+        home:StreamBuilder<User?>(
+          stream: FirebaseAuthenticationService.auth?.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return const MyHomePage();
+            }
+            return  PhoneNumberVerification();
+          },
+        )
+        
+        
+      ,
       ),
     );
   }
@@ -84,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
    
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
+      /* appBar: AppBar(
         toolbarHeight: 70,
         backgroundColor: Colors.blue.shade300,
         title: Text(
@@ -105,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ],
-      ),
+      ), */
 
       floatingActionButton: const CheckOutFloatingButton(),
 

@@ -38,13 +38,14 @@ class PhoneAuthenticationNotifier extends ChangeNotifier {
 
   Future<void> signInWithPhoneNumber(String phoneNumberVal) async {
     try {
-      print("phonenumbertext$phoneNumberVal");
+     
       phoneAuthenticationNotifierState = PhoneAuthenticationNotifierState.loading;
       phoneNumber=phoneNumberVal;
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumberVal,
         verificationCompleted: (PhoneAuthCredential credential) async {
           await _auth.signInWithCredential(credential);
+          phoneAuthenticationNotifierState =PhoneAuthenticationNotifierState.loaded;
         },
         verificationFailed: (FirebaseAuthException e) {
           if (e.code == 'invalid-phone-number') {
@@ -54,11 +55,12 @@ class PhoneAuthenticationNotifier extends ChangeNotifier {
         codeSent: (String verificationId, int? resendToken) async {
           codeSentCheck = true;
           verificationIdVal=verificationId;
+          phoneAuthenticationNotifierState = PhoneAuthenticationNotifierState.loaded;
         },
         codeAutoRetrievalTimeout: (String verificationId) {},
       );
-      phoneAuthenticationNotifierState = PhoneAuthenticationNotifierState.loaded;
     } catch (e) {
+      phoneAuthenticationNotifierState =PhoneAuthenticationNotifierState.error;
       print(e);
     }
   }

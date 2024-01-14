@@ -1,4 +1,4 @@
-package com.example.kirna_store_app
+package com.manav.ShyamMart
 
 import io.flutter.embedding.android.FlutterActivity
 

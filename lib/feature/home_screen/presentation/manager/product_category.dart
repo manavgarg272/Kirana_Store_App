@@ -33,7 +33,6 @@ class ProductCategoryNotifier extends ChangeNotifier {
       productCategoryNotifierState = ProductCategoyrNotifierState.loading;
       getCategoryModel = await _categoryUseCase();
       productCategoryNotifierState = ProductCategoyrNotifierState.loaded;
-
     } catch (e) {
       print("getproductcategorydata $e");
     }

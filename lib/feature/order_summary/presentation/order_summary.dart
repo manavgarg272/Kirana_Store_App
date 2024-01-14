@@ -19,13 +19,19 @@ class OrderSummaryWidget extends StatefulWidget {
 
 class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
     with SingleTickerProviderStateMixin {
-  void _modalBottomSheetMenu() {
-    showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (builder) {
-          return const DraggableBottomSheet();
-        });
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      
+        context.read<GetUserLocationNotifier>().getUserLocationAddress(
+            uuid: FirebaseAuth.instance.currentUser!.uid);
+            context
+    .read<LocationManagerNotifer>().locationNotiferState==LocationManagerNotiferState.initial;
+   
+    });
+
+
+    super.initState();
   }
 
   @override
@@ -34,7 +40,6 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade300,
         title: Text(
           "Order Summary List",
           style: GoogleFonts.roboto(
@@ -138,7 +143,6 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
             SizedBox(
               height: size.height / 40,
             ),
-      
             OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -151,28 +155,39 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                   ),
                 ),
                 onPressed: () async {
+                
                   if (context
                       .read<GetUserLocationNotifier>()
                       .userAddress
                       .isEmpty) {
-                    await context
-                        .read<LocationManagerNotifer>()
-                        .getCurrentPosition(context);
-                    _modalBottomSheetMenu();
-                    context
+                        print("useraddress${context
                         .read<GetUserLocationNotifier>()
-                        .getUserLocationAddress(
-                            uuid: FirebaseAuth.instance.currentUser!.uid);
-                  }
-               
-                  else {
-             
+                        .userAddress
+                        .isEmpty}");
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (builder) {
+                          return  DraggableBottomSheet();
+                        }).then((value) => {
+                          context
+                          .read<GetUserLocationNotifier>()
+                          .getUserLocationAddress(
+                              uuid: FirebaseAuth.instance.currentUser!.uid)
+                        });
+                   
+                  } else {
                     await context
                         .read<OrderSummaryNotifier>()
                         .placeUserOrderToFirebase(
                             userOrderPlacedModel: UserOrderPlacedModel(
-                              createdAt: DateTime.now(),
-                              locationId:context.read<GetUserLocationNotifier>().userAddress[0].locationId??"",
+                                createdAt: DateTime.now(),
+                                locationId:
+                                    context
+                                            .read<GetUserLocationNotifier>()
+                                            .userAddress[0]
+                                            .locationId ??
+                                        "",
                                 orderList: context
                                     .read<OrderSummaryNotifier>()
                                     .orderItemData,
@@ -181,21 +196,22 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                                     .orderTotalAmount,
                                 userId: FirebaseAuth.instance.currentUser!.uid,
                                 orderStatus: 'INITIATED'));
-            
-               
-                              if (context
+
+                    if (context
                             .read<OrderSummaryNotifier>()
                             .orderSummaryNotifierState ==
                         OrderSummaryNotifierState.loaded) {
-                          context
-                            .read<OrderSummaryNotifier>().emptyOrderListMap();
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext context) {
-                              return OrderSuccessDialog();
-                            });
-                            context.read<OrderSummaryNotifier>().orderSummaryNotifierState = OrderSummaryNotifierState.initial;
+                      context.read<OrderSummaryNotifier>().emptyOrderListMap();
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return OrderSuccessDialog();
+                          });
+                      context
+                              .read<OrderSummaryNotifier>()
+                              .orderSummaryNotifierState =
+                          OrderSummaryNotifierState.initial;
                     }
                   }
                 },

@@ -42,7 +42,7 @@ class _MyProfilePageScreenState extends State<MyProfilePageScreen> {
                 height: size.height / 80,
               ),
               Text(
-                '${FirebaseAuth.instance.currentUser!.phoneNumber}',
+                FirebaseAuth.instance.currentUser==null?"": '${FirebaseAuth.instance.currentUser!.phoneNumber}',
                 style: GoogleFonts.roboto(
                     fontSize: size.height / 60, fontWeight: FontWeight.w500),
               ),

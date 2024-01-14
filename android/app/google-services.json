@@ -7,12 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:972211348634:android:94f138737e85286888eb23",
+        "mobilesdk_app_id": "1:972211348634:android:4ff641b5a63ff79188eb23",
         "android_client_info": {
-          "package_name": "com.example.kirna_store_app"
+          "package_name": "com.example.kirana_store_crm"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "972211348634-oga8onkor064g89ns224annu7rros8oc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBfyWsh9O26qn4SmEeM_jDIF1W55zyPWYo"
@@ -20,7 +25,55 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972211348634-oga8onkor064g89ns224annu7rros8oc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "972211348634-283pqcg78iehc18fkug0c1b3vhe8k622.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.kiranaStoreCrm"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972211348634:android:c064864536c6184288eb23",
+        "android_client_info": {
+          "package_name": "com.manav.ShyamMart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972211348634-oga8onkor064g89ns224annu7rros8oc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfyWsh9O26qn4SmEeM_jDIF1W55zyPWYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972211348634-oga8onkor064g89ns224annu7rros8oc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "972211348634-283pqcg78iehc18fkug0c1b3vhe8k622.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.kiranaStoreCrm"
+              }
+            }
+          ]
         }
       }
     }

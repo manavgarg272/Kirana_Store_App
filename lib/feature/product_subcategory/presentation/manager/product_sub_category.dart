@@ -20,19 +20,15 @@ class SubCategoryNotifier extends ChangeNotifier {
   final SubCategoryUseCase _subCategoryUseCase = SubCategoryUseCase(
       subCategoryRepo: SubcategoryRepoImpl(subCategoyrDs: SubCategoryDsImpl()));
 
-  List<SubCategoryModel> _subCategoryData = [];
-  List<SubCategoryModel> get subCategoryData => _subCategoryData;
-  set subCategoryData(List<SubCategoryModel> value) {
-    _subCategoryData = value;
-    notifyListeners();
-  }
-
+   Map<String,List<SubCategoryModel>> _subCategoryMapData ={};
+   Map<String,List<SubCategoryModel>> get subCategoryMapData =>_subCategoryMapData; 
   Future<void> getSubCategoryData( {required String categoryData}) async {
+  
     try {
       subcategoryRepoNotifierState = SubCategoryNotifierState.loading;
-      subCategoryData = await _subCategoryUseCase(categoryData);
-      /* print("getSubCategoryData"); */
+      _subCategoryMapData[categoryData] = await _subCategoryUseCase(categoryData);
       subcategoryRepoNotifierState = SubCategoryNotifierState.loaded;
+      notifyListeners();
     } catch (e) {
       print("subcategorydata $e");
     }

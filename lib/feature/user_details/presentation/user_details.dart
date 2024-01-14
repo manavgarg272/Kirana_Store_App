@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kirna_store_app/feature/user_details/data/model/user_model.dart';
+import 'package:kirna_store_app/feature/user_details/presentation/manager/location_manager.dart';
 import 'package:kirna_store_app/feature/user_details/presentation/manager/user_manager.dart';
 import 'package:kirna_store_app/feature/user_details/presentation/widget/input_widget.dart';
 import 'package:provider/provider.dart';
@@ -126,37 +127,47 @@ class _DraggableBottomSheetState extends State<DraggableBottomSheet> {
                     ),
                     onPressed: () async {
                       if (formKeyNew.currentState!.validate()) {
-
-                       await context
+                        await context
                             .read<LocationManagerNotifer>()
                             .saveUserAddressToFirebase(
                                 userData: UserModelData(
-                                  locationPermission: context
-                                  .read<LocationManagerNotifer>().serviceEnabled,
-                                  userId:FirebaseAuth
-                                  .instance.currentUser!.uid ,
+                                    locationPermission: context
+                                        .read<LocationManagerNotifer>()
+                                        .serviceEnabled,
+                                    userId:
+                                        FirebaseAuth.instance.currentUser!.uid,
                                     name: _nameController.text,
                                     email: FirebaseAuth
                                             .instance.currentUser!.email ??
                                         "",
                                     phoneNumber: _phoneController.text,
-                                    logitude:    context
-                                    .read<LocationManagerNotifer>().currentPosition.longitude,
-                                    latitude:context
-                                    .read<LocationManagerNotifer>().currentPosition.latitude ,
+                                    logitude: context
+                                        .read<LocationManagerNotifer>()
+                                        .currentPosition
+                                        .longitude,
+                                    latitude: context
+                                        .read<LocationManagerNotifer>()
+                                        .currentPosition
+                                        .latitude,
                                     landMark: _landmarkController.text,
                                     address: _addressController.text,
                                     placeMark: context
                                         .read<LocationManagerNotifer>()
                                         .place));
-                    
-                    
-                     
-                     
-                                      }
+
+                        if (context
+                                .read<LocationManagerNotifer>()
+                                .locationNotiferState ==
+                            LocationManagerNotiferState.loaded)
+                          Navigator.of(context).pop();
+                      }
                     },
-                    child:   context
-                    .read<LocationManagerNotifer>().locationNotiferState==LocationManagerNotiferState.loading?const CircularProgressIndicator():  const Text("Confirm  Address"))
+                    child: context
+                                .watch<LocationManagerNotifer>()
+                                .locationNotiferState ==
+                            LocationManagerNotiferState.loading
+                        ? const CircularProgressIndicator()
+                        : const Text("Confirm  Address"))
               ],
             ),
           ),
