@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kirna_store_app/core/services/razorpay_service/model/razorpay_model.dart';
+import 'package:kirna_store_app/core/services/razorpay_service/razorpay_create_order/razorpay_create_order.dart';
+import 'package:kirna_store_app/core/services/razorpay_service/razorpay_service.dart';
 import 'package:kirna_store_app/feature/order_summary/data/model/user_order_model.dart';
 import 'package:kirna_store_app/feature/order_summary/presentation/manager/order_summary_manager.dart';
 import 'package:kirna_store_app/feature/order_summary/presentation/order_success_widget.dart';
+import 'package:kirna_store_app/feature/order_summary/presentation/widget/order_status_widget.dart';
 import 'package:kirna_store_app/feature/order_summary/presentation/widget/order_summary_widget.dart';
 import 'package:kirna_store_app/feature/user_details/presentation/manager/location_manager.dart';
 import 'package:kirna_store_app/feature/user_details/presentation/manager/user_manager.dart';
@@ -22,14 +26,12 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      
-        context.read<GetUserLocationNotifier>().getUserLocationAddress(
-            uuid: FirebaseAuth.instance.currentUser!.uid);
-            context
-    .read<LocationManagerNotifer>().locationNotiferState==LocationManagerNotiferState.initial;
-   
+      context
+          .read<GetUserLocationNotifier>()
+          .getUserLocationAddress(uuid: FirebaseAuth.instance.currentUser!.uid);
+      context.read<LocationManagerNotifer>().locationNotiferState ==
+          LocationManagerNotiferState.initial;
     });
-
 
     super.initState();
   }
@@ -155,64 +157,37 @@ class _OrderSummaryWidgetState extends State<OrderSummaryWidget>
                   ),
                 ),
                 onPressed: () async {
-                
                   if (context
                       .read<GetUserLocationNotifier>()
                       .userAddress
                       .isEmpty) {
-                        print("useraddress${context
-                        .read<GetUserLocationNotifier>()
-                        .userAddress
-                        .isEmpty}");
                     showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
                         builder: (builder) {
-                          return  DraggableBottomSheet();
+                          return DraggableBottomSheet();
                         }).then((value) => {
                           context
-                          .read<GetUserLocationNotifier>()
-                          .getUserLocationAddress(
-                              uuid: FirebaseAuth.instance.currentUser!.uid)
+                              .read<GetUserLocationNotifier>()
+                              .getUserLocationAddress(
+                                  uuid: FirebaseAuth.instance.currentUser!.uid)
                         });
-                   
                   } else {
-                    await context
-                        .read<OrderSummaryNotifier>()
-                        .placeUserOrderToFirebase(
-                            userOrderPlacedModel: UserOrderPlacedModel(
-                                createdAt: DateTime.now(),
-                                locationId:
-                                    context
-                                            .read<GetUserLocationNotifier>()
-                                            .userAddress[0]
-                                            .locationId ??
-                                        "",
-                                orderList: context
+                    RazorPayServiceCall _razorPayService = RazorPayServiceCall(
+                        razorPayModel: RazorPayModel(
+                            key: 'rzp_test_lINTeuxOaEpLOW',
+                            amount: 100 *
+                                (context
                                     .read<OrderSummaryNotifier>()
-                                    .orderItemData,
-                                totalAmount: context
-                                    .read<OrderSummaryNotifier>()
-                                    .orderTotalAmount,
-                                userId: FirebaseAuth.instance.currentUser!.uid,
-                                orderStatus: 'INITIATED'));
+                                    .orderTotalAmount),
+                            name: 'Acme Corp.',
+                            description: 'Fine T-Shirt',
+                            prefill: Prefill(
+                                contact: '8888888888',
+                                email: 'test@razorpay.com')),
+                        params: OrderStatusCardWidget(context: context));
 
-                    if (context
-                            .read<OrderSummaryNotifier>()
-                            .orderSummaryNotifierState ==
-                        OrderSummaryNotifierState.loaded) {
-                      context.read<OrderSummaryNotifier>().emptyOrderListMap();
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return OrderSuccessDialog();
-                          });
-                      context
-                              .read<OrderSummaryNotifier>()
-                              .orderSummaryNotifierState =
-                          OrderSummaryNotifierState.initial;
-                    }
+                    _razorPayService.openCheckOut();
                   }
                 },
                 child: Container(

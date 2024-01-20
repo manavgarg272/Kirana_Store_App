@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kirna_store_app/core/services/firebase_service/firebase_auth_service.dart';
+import 'package:kirna_store_app/core/services/pakage_info/pakage_info_service.dart';
 import 'package:kirna_store_app/feature/authentication/presentation/choose_auth_screen.dart';
 import 'package:kirna_store_app/feature/authentication/presentation/manager/phone_authentication_notifier.dart';
 import 'package:kirna_store_app/feature/home_screen/presentation/home_screen.dart';
@@ -15,10 +17,12 @@ import 'package:kirna_store_app/feature/profile/presentation/profile.dart';
 import 'package:kirna_store_app/feature/user_details/presentation/manager/location_manager.dart';
 import 'package:kirna_store_app/feature/user_details/presentation/manager/user_manager.dart';
 import 'package:provider/provider.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseAuthenticationService.initializeValue();
   await FirebaseAuthenticationService.fetchRemoteConfigDetails();
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -55,18 +59,15 @@ class MyApp extends StatelessWidget {
           }),
           useMaterial3: true,
         ),
-        home:StreamBuilder<User?>(
+        home: StreamBuilder<User?>(
           stream: FirebaseAuthenticationService.auth?.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return const MyHomePage();
             }
-            return  PhoneNumberVerification();
+            return PhoneNumberVerification();
           },
-        )
-        
-        
-      ,
+        ),
       ),
     );
   }
@@ -84,16 +85,25 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  PakageInfoService _pakageInfoService = new PakageInfoService();
+  @override
+  void initState() {
+    initilaizePakageInfo();
+    super.initState();
+  }
+
+  void initilaizePakageInfo() async {
+    await _pakageInfoService.initializePakageValue();
+    _pakageInfoService.showDialogBox(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       backgroundColor: Colors.white,
       /* appBar: AppBar(

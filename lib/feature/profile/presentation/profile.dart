@@ -19,7 +19,6 @@ class _MyProfilePageScreenState extends State<MyProfilePageScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade300,
         title: Text(
           "My Profile",
           style: GoogleFonts.roboto(
@@ -36,13 +35,15 @@ class _MyProfilePageScreenState extends State<MyProfilePageScreen> {
               Text(
                 'My Account',
                 style: GoogleFonts.roboto(
-                    fontSize: size.height / 30, fontWeight: FontWeight.w500),
+                    fontSize: size.height / 50, fontWeight: FontWeight.w500),
               ),
               SizedBox(
                 height: size.height / 80,
               ),
               Text(
-                FirebaseAuth.instance.currentUser==null?"": '${FirebaseAuth.instance.currentUser!.phoneNumber}',
+                FirebaseAuth.instance.currentUser == null
+                    ? ""
+                    : '${FirebaseAuth.instance.currentUser!.phoneNumber}',
                 style: GoogleFonts.roboto(
                     fontSize: size.height / 60, fontWeight: FontWeight.w500),
               ),
@@ -51,21 +52,22 @@ class _MyProfilePageScreenState extends State<MyProfilePageScreen> {
               ),
               Text(
                 'Your Information',
-                style: GoogleFonts.roboto(fontSize: size.height / 50,color: Colors.grey.shade600),
+                style: GoogleFonts.roboto(
+                    fontSize: size.height / 50, color: Colors.grey.shade600),
               ),
               SizedBox(
                 height: size.height / 40,
               ),
-             GestureDetector(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const OrderHistoryPage()));
-              },
-               child: const ProfileWidget(
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const OrderHistoryPage()));
+                },
+                child: const ProfileWidget(
                   icon: Icons.shopping_bag,
                   textOrder: 'Your order',
                 ),
-             ),
+              ),
               SizedBox(
                 height: size.height / 40,
               ),
@@ -77,7 +79,7 @@ class _MyProfilePageScreenState extends State<MyProfilePageScreen> {
                 height: size.height / 40,
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   Share.share('com.example.kirna_store_app');
                 },
                 child: const ProfileWidget(
@@ -88,12 +90,11 @@ class _MyProfilePageScreenState extends State<MyProfilePageScreen> {
               SizedBox(
                 height: size.height / 40,
               ),
-          
               GestureDetector(
-                onTap: ()async {
-               await  FirebaseAuth.instance.signOut();
-                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const MyApp()));
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const MyApp()));
                 },
                 child: const ProfileWidget(
                   icon: Icons.logout,
@@ -107,5 +108,3 @@ class _MyProfilePageScreenState extends State<MyProfilePageScreen> {
     );
   }
 }
-
-
